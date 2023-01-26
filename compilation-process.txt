@@ -1,0 +1,19 @@
+
+Definitions:
+script_line: 
+
+Generate string pointers to source code
+The compilation starts by receiving presumably a large string of NX-Script. The first step is create a series of std::string_views pointed to each *script_line of nx-script.
+
+Tokenization
+
+Syntax Tree 
+
+Generation of Parsable Tokens
+
+Generation of Postfix Parsable Tokens
+
+Postfix Solver
+
+
+
