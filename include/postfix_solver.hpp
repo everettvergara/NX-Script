@@ -67,7 +67,7 @@ namespace eg
                 {
                     auto &value = tk.get_value();
                     if (not value) 
-                        value = svtofp<FP>(tk.get_token_name());
+                        value = svton<FP>(tk.get_token_name());
                     result.push(*value);
 
                 } else if (is_token_type_var(tt)) {
@@ -91,7 +91,7 @@ namespace eg
                             {
                                 auto &value = tk_param.get_value();
                                 if (not value) 
-                                    value = *svtofp<FP>(tk_param.get_token_name());
+                                    value = *svton<FP>(tk_param.get_token_name());
 
                             } else if (is_token_type_var(tt_tk_param) or is_token_type_fn(tt_tk_param)) {
     

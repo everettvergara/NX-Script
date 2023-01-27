@@ -12,6 +12,7 @@
 #include "token.hpp"
 #include "common_dastruct.hpp"
 #include "common_alias.hpp" 
+#include "common_fn.hpp"
 
 namespace eg
 {
@@ -392,38 +393,6 @@ namespace eg
         return std::string_view(s, e);
     }
 
-    template<typename T>
-    auto svtoi(const std::string_view sv) -> std::optional<T> {
-        if(!std::is_integral_v<T>) return {};
-        if(!sv.size()) return {};
-        T n{0};
-        auto t = sv.begin();
-        bool negative = *t == '-' ? true : false;
-        t += negative;
-        while(t != sv.end()) {
-            if(!isdigit(*t)) return {};
-            n = (n * 10) + (*t - '0');
-            ++t;
-        }
-        return negative ? -n : n;
-    }
-
-    template<typename T>
-    auto svtofp(const std::string_view sv) -> std::optional<T> {
-        if(!std::is_floating_point_v<T>) return {};
-        if(!sv.size()) return {};
-        T n{0};
-        auto t = sv.begin();
-        bool negative = *t == '-' ? true : false;
-        t += negative;
-        while(t != sv.end()) {
-            if(!isdigit(*t)) return {};
-            n = (n * 10) + (*t - '0');
-            ++t;
-        }
-        return negative ? -n : n;
-    }
-
     auto get_token_id_from_sv_param(const std::string_view sv) 
             -> std::optional<token_id>
     {
@@ -431,7 +400,7 @@ namespace eg
         auto e = std::find_if_not(s + 1, sv.end(),  [](char ch) -> bool {
                                                         return std::isdigit(ch);
                                                     });
-        auto tk_id = svtoi<token_id>(std::string_view(s, e));
+        auto tk_id = svton<token_id>(std::string_view(s, e));
         return tk_id;
     }
 

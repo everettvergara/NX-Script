@@ -70,7 +70,6 @@ namespace eg
                 if (not is_addable_token(tt)) 
                     continue;
 
-
                 auto &tks           = data_.get_tokens();
                 auto &tk_name_tk_id = data_.get_token_name_token_id();
 
@@ -120,7 +119,7 @@ namespace eg
             return true;
         }
 
-        auto eval_fn_param_with_val_and_get_param_script_list(token &tk) -> std::optional<script_list> //, const size_t lno) -> std::optional<script_list>
+        auto eval_fn_param_with_val_and_get_param_script_list(token &tk) -> std::optional<script_list> 
         {
             auto fn_signature = get_fn_from_tk_sv_name(tk.get_token_name());
             if (not fn_signature) 
