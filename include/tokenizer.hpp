@@ -6,6 +6,7 @@
 #include "script_data.hpp"
 #include "common_dastruct.hpp"
 #include "token_helper.hpp"
+#include "exec_fn.hpp"
 
 namespace eg
 {

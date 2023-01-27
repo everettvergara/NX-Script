@@ -8,25 +8,6 @@
 
 namespace eg
 {
-
-    auto get_token_fn_executor(const std::string_view str) 
-            -> std::optional<std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>>
-    {
-        using namespace std::placeholders;
-        static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
-        {
-            {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
-            {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
-            {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
-            {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
-        };
-
-        auto f = fn_signature.find(str); 
-        if(f != fn_signature.end()) return f->second;
-        
-        return {};
-    }
-
     auto exec_fn_sqrt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (args.size() != 1) return {};
@@ -89,5 +70,37 @@ namespace eg
     }
 
 
+    auto get_token_fn_executor(const std::string_view str) 
+            -> std::optional<std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>>
+    {
+        using namespace std::placeholders;
+        static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
+        {
+            {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
+            {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
+            {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
+            {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
+        };
 
+        auto f = fn_signature.find(str); 
+        if(f != fn_signature.end()) return f->second;
+        
+        return {};
+    }
+
+    auto get_token_fn_signature(std::string_view str) -> std::optional<size_t>
+    {
+        static std::unordered_map<std::string_view, size_t> fn_signature
+        {
+            {"$prt",    1},
+            {"$sqrt",   1},
+            {"$pow",    2},
+            {"$pi",     0},
+        };
+
+        if(auto f = fn_signature.find(str); f != fn_signature.end()) 
+            return f->second;
+
+        return {};
+    }
 }

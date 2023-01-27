@@ -8,6 +8,7 @@
 #include "script_data.hpp"
 #include "error_info.hpp"
 #include "exec_fn.hpp"
+#include "exec_op.hpp"
 
 namespace eg
 {
