@@ -7,6 +7,7 @@
 #include <boost/range/combine.hpp>
 #include "script_data.hpp"
 #include "error_info.hpp"
+#include "exec_fn.hpp"
 
 namespace eg
 {

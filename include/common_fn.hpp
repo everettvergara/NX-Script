@@ -6,7 +6,6 @@
 
 namespace eg
 {
-
     template<typename N>
     auto svton(const std::string_view sv) -> std::optional<N> {
         if(!std::is_integral_v<N> and !std::is_floating_point_v<N>) return {};
@@ -22,39 +21,4 @@ namespace eg
         }
         return negative ? -n : n;
     }
-
-    // template<typename T>
-    // auto svtoi(const std::string_view sv) -> std::optional<T> {
-    //     if(!std::is_integral_v<T>) return {};
-    //     if(!sv.size()) return {};
-    //     T n{0};
-    //     auto t = sv.begin();
-    //     bool negative = *t == '-' ? true : false;
-    //     t += negative;
-    //     while(t != sv.end()) {
-    //         if(!isdigit(*t)) return {};
-    //         n = (n * 10) + (*t - '0');
-    //         ++t;
-    //     }
-    //     return negative ? -n : n;
-    // }
-
-    // template<typename T>
-    // auto svtofp(const std::string_view sv) -> std::optional<T> {
-    //     if(!std::is_floating_point_v<T>) return {};
-    //     if(!sv.size()) return {};
-    //     T n{0};
-    //     auto t = sv.begin();
-    //     bool negative = *t == '-' ? true : false;
-    //     t += negative;
-    //     while(t != sv.end()) {
-    //         if(!isdigit(*t)) return {};
-    //         n = (n * 10) + (*t - '0');
-    //         ++t;
-    //     }
-    //     return negative ? -n : n;
-    // }
-
-
-
 }
