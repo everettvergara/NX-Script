@@ -121,8 +121,8 @@ namespace eg
         using namespace std::placeholders;
         static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
         {
-            {"$min",    std::bind(&exec_fn_prt, _1, _2)},
-            {"$max",    std::bind(&exec_fn_prt, _1, _2)},
+            {"$min",    std::bind(&exec_fn_min, _1, _2)},
+            {"$max",    std::bind(&exec_fn_max, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},

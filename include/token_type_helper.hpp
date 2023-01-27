@@ -179,7 +179,7 @@ namespace eg
     {
         auto s = sv.begin() + i;
         auto e = std::find_if_not(s, sv.end(),  [](char ch) -> bool {
-                                                    return std::isalpha(ch);
+                                                    return std::isalnum(ch);
                                                 });
 
         i += e - s;

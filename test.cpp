@@ -7,9 +7,12 @@ using eg::nx_script;
 
 auto main() -> int
 {
-
     std::string str
     {   
+        "var1 = 1000;"
+        "var2 = 2000;"
+        "var3 = 3000;"
+        "$prt($min(500, $max(var1, $min(var2, var3))));"
         "x = (5 * 2);"
         "x = x + 1;"
         "y = x * 20;"

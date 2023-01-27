@@ -41,7 +41,6 @@ namespace eg
 
             for (const auto lno : line_seq)
             {
-                std::cout << "lno: " << lno << std::endl;
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
