@@ -8,6 +8,51 @@
 
 namespace eg
 {
+
+    auto exec_fn_min(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (args.size() != 2) return {};
+
+        auto tk_id1 = std::get<0>(args.front());
+        
+        auto f1 = tks.find(tk_id1);
+        if (f1 == tks.end()) return {};
+        
+        auto &tk1 = f1->second;
+        if (not tk1.get_value()) return {};
+
+        auto tk_id2 = std::get<0>(args.back());
+        auto f2 = tks.find(tk_id2);
+        if (f2 == tks.end()) return {};
+
+        auto &tk2 = f2->second;
+        if (not tk2.get_value()) return {};
+
+        return std::min(*tk1.get_value(), *tk2.get_value());
+    }
+
+    auto exec_fn_max(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (args.size() != 2) return {};
+
+        auto tk_id1 = std::get<0>(args.front());
+        
+        auto f1 = tks.find(tk_id1);
+        if (f1 == tks.end()) return {};
+        
+        auto &tk1 = f1->second;
+        if (not tk1.get_value()) return {};
+
+        auto tk_id2 = std::get<0>(args.back());
+        auto f2 = tks.find(tk_id2);
+        if (f2 == tks.end()) return {};
+
+        auto &tk2 = f2->second;
+        if (not tk2.get_value()) return {};
+
+        return std::max(*tk1.get_value(), *tk2.get_value());
+    }
+
     auto exec_fn_sqrt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (args.size() != 1) return {};
@@ -76,6 +121,8 @@ namespace eg
         using namespace std::placeholders;
         static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
         {
+            {"$min",    std::bind(&exec_fn_prt, _1, _2)},
+            {"$max",    std::bind(&exec_fn_prt, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
@@ -92,6 +139,8 @@ namespace eg
     {
         static std::unordered_map<std::string_view, size_t> fn_signature
         {
+            {"$min",    2},
+            {"$max",    2},
             {"$prt",    1},
             {"$sqrt",   1},
             {"$pow",    2},
