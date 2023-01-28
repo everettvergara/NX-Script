@@ -40,6 +40,7 @@ namespace eg
 
             for (const auto lno : line_seq)
             {
+                std::cout << lno << ": ";
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
@@ -47,6 +48,8 @@ namespace eg
 
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                     return false;
+                std::cout << std::endl;
+
             }
 
             return true;
@@ -58,6 +61,15 @@ namespace eg
         {
             result.push(0);
         }
+
+        auto process_num(token &tk)
+        {
+            auto &value = tk.get_value();
+            if (not value) 
+                value = svton<FP>(tk.get_token_name());
+        }
+
+
 
         auto process_num(token &tk, std::stack<FP> &result)
         {
@@ -147,22 +159,31 @@ namespace eg
                 
                 if (is_token_type_num(tt))                      process_num(tk, result);
                 
-                else if (is_token_type_var(tt) and 
-                            not process_var(tk, result))        return false;
+                else if (is_token_type_var(tt)) 
+                            {if (not process_var(tk, result))        return false;}
                 
                 else if (is_token_type_fn(tt) and 
                             not process_fn(tks, tk, result))    return false;
                 
-                else if (is_token_type_op(tt) and 
-                            not process_op(tk, result))         return false;
+                else if (is_token_type_op(tt))
+                // bug if made and 
+                        {if (not process_op(tk, result))         return false;}
                 
                 else if (is_token_type_stop(tt))                process_stop(result);
                 
-                else                                            return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
+                else
+                {
+                std::cout << "tt " << tt <<  std::endl;
+                                                            return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
+                }
             }
 
             if (result.size() != 1)
+            {
+
+                std::cout << "result stack > 1" << std::endl;
                 return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, line);
+            }
 
             if (lvalue_tk_id) 
                 tks.find(lvalue_tk_id)->second.get_value() = result.top();

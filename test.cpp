@@ -13,12 +13,12 @@ auto main() -> int
         "var2 = 2000;"
         "var3 = 3000;"
         "$prt($min(500, $max(var1, $min(var2, var3))));"
-        "x = (5 * 2);"
-        "x = x + 1;"
-        "y = x * 20;"
-        "w = $pow(x , 2);"
-        "z = $sqrt(x * x + y * y + w);"
-        "$prt(z);"
+        // "x = (5 * 2);"
+        // "x = x + 1;"
+        // "y = x * 20;"
+        // "w = $pow(x , 2);"
+        // "z = $sqrt(x * x + y * y + w);"
+        // "$prt(z);"
     };
 
     // std::string str
