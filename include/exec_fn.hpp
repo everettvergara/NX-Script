@@ -11,22 +11,27 @@ namespace eg
 
     auto exec_fn_min(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2) return {};
+        if (args.size() != 2)
+            return {};
 
         auto tk_id1 = std::get<0>(args.front());
         
         auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end()) return {};
+        if (f1 == tks.end())
+            return {};
         
         auto &tk1 = f1->second;
-        if (not tk1.get_value()) return {};
+        if (not tk1.get_value())
+            return {};
 
         auto tk_id2 = std::get<0>(args.back());
         auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end()) return {};
+        if (f2 == tks.end())
+            return {};
 
         auto &tk2 = f2->second;
-        if (not tk2.get_value()) return {};
+        if (not tk2.get_value())
+            return {};
 
         return std::min(*tk1.get_value(), *tk2.get_value());
     }
