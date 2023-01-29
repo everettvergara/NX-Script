@@ -24,6 +24,8 @@ namespace eg
 
     auto get_2arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP>> 
     {
+        if (args.size() != 2) return {};
+
         auto a1 = get_arg_value(0, tks, args);
         if (not a1) return {};
 
@@ -35,67 +37,30 @@ namespace eg
 
     auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2) return {};
-
-        auto t = get_2arg_values(tks, args); if (not t) return {};
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
+        
         auto [a, b] = t.value();
-
         return (a != 0) xor (b != 0);
     }
 
     auto exec_fn_or(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() == 1 or *tk2.get_value() == 1;
+        auto [a, b] = t.value();
+        return (a != 0) or (b != 0);
     }
 
 
     auto exec_fn_and(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() == 1 and *tk2.get_value() == 1;
+        auto [a, b] = t.value();
+        return (a != 0) and (b != 0);
     }
 
     auto exec_fn_not(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -117,218 +82,75 @@ namespace eg
 
     auto exec_fn_greater_than_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() >= *tk2.get_value() ? 1 : 0;
+        auto [a, b] = t.value();
+        return a >= b;
     }
 
     auto exec_fn_greater_than(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() > *tk2.get_value() ? 1 : 0;
+        auto [a, b] = t.value();
+        return a > b;
     }
-
-
 
     auto exec_fn_less_than_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() <= *tk2.get_value() ? 1 : 0;
+        auto [a, b] = t.value();
+        return a <= b;
     }
-
 
     auto exec_fn_less_than(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() < *tk2.get_value() ? 1 : 0;
+        auto [a, b] = t.value();
+        return a < b;
     }
 
 
     auto exec_fn_not_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() != *tk2.get_value() ? 1 : 0;
+        auto [a, b] = t.value();
+        return a != b;
     }
-
 
     auto exec_fn_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return *tk1.get_value() == *tk2.get_value() ? 1 : 0;
+        auto [a, b] = t.value();
+        return a == b;
     }
 
     auto exec_fn_min(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end())
-            return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value())
-            return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end())
-            return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value())
-            return {};
-
-        return std::min(*tk1.get_value(), *tk2.get_value());
+        auto [a, b] = t.value();
+        return std::min(a, b);
     }
 
     auto exec_fn_max(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2) return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end()) return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value()) return {};
-
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end()) return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value()) return {};
-
-        return std::max(*tk1.get_value(), *tk2.get_value());
+        auto [a, b] = t.value();
+        return std::max(a, b);
     }
 
     auto exec_fn_sqrt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -372,24 +194,13 @@ namespace eg
 
     auto exec_fn_pow(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2) return {};
-
-        auto tk_id1 = std::get<0>(args.front());
+        auto t = get_2arg_values(tks, args); 
+        if (not t) return {};
         
-        auto f1 = tks.find(tk_id1);
-        if (f1 == tks.end()) return {};
-        
-        auto &tk1 = f1->second;
-        if (not tk1.get_value()) return {};
+        auto [a, b] = t.value();
+        return std::max(a, b);
 
-        auto tk_id2 = std::get<0>(args.back());
-        auto f2 = tks.find(tk_id2);
-        if (f2 == tks.end()) return {};
-
-        auto &tk2 = f2->second;
-        if (not tk2.get_value()) return {};
-
-        return static_cast<FP>(std::pow(*tk1.get_value(), *tk2.get_value()));
+        return static_cast<FP>(std::pow(a, b));
     }
 
 
@@ -399,8 +210,6 @@ namespace eg
         using namespace std::placeholders;
         static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
         {
- 
-
             {"$min",    std::bind(&exec_fn_min, _1, _2)},
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
