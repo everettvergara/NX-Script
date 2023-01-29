@@ -164,6 +164,18 @@ namespace eg
         return static_cast<FP>(3.1415926535);
     }
 
+    auto exec_fn_true(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (not args.empty()) return {};
+        return 1.0;
+    }
+
+    auto exec_fn_false(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (not args.empty()) return {};
+        return 0.0;
+    }
+
     auto exec_fn_prt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (args.size() != 1) return {};
