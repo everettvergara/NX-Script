@@ -211,6 +211,22 @@ namespace eg
         using namespace std::placeholders;
         static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
         {
+            //{"$if",    std::bind(&exec_fn_if, _1, _2)},
+
+            {"$eq",    std::bind(&exec_fn_eq, _1, _2)},
+            {"$neq",    std::bind(&exec_fn_not_eq, _1, _2)},
+            {"$lt",    std::bind(&exec_fn_less_than, _1, _2)},
+            {"$lte",    std::bind(&exec_fn_less_than_eq, _1, _2)},
+            {"$gt",    std::bind(&exec_fn_greater_than, _1, _2)},
+            {"$gte",    std::bind(&exec_fn_greater_than_eq, _1, _2)},
+            {"$and",    std::bind(&exec_fn_and, _1, _2)},
+            {"$or",    std::bind(&exec_fn_or, _1, _2)},
+            {"$xor",    std::bind(&exec_fn_xor, _1, _2)},
+            {"$not",    std::bind(&exec_fn_not, _1, _2)},
+
+            {"$true",    std::bind(&exec_fn_true, _1, _2)},
+            {"$false",    std::bind(&exec_fn_false, _1, _2)},
+
             {"$min",    std::bind(&exec_fn_min, _1, _2)},
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
@@ -229,12 +245,31 @@ namespace eg
     {
         static std::unordered_map<std::string_view, size_t> fn_signature
         {
-            {"$min",    2},
-            {"$max",    2},
-            {"$prt",    1},
-            {"$sqrt",   1},
-            {"$pow",    2},
-            {"$pi",     0},
+            {"$if",    3},
+
+            {"$eq",    2},
+            {"$neq",   2},
+            {"$lt",    2},
+            {"$lte",   2},
+            {"$gt",    2},
+            {"$gte",   2},
+            {"$and",   2},
+            {"$or",    2},
+            {"$xor",   2},
+            {"$not",   1},
+
+            {"$true",  0},
+            {"$false", 0},
+
+            {"$min",   2},
+            {"$max",   2},
+
+            {"$prt",   1},
+            {"$sqrt",  1},
+            {"$pow",   2},
+
+            {"$pi",    0},
+
         };
 
         if(auto f = fn_signature.find(str); f != fn_signature.end()) 
