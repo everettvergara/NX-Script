@@ -61,6 +61,16 @@ namespace eg
     }
 
 
+    auto exec_fn_if(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto t = get_3arg_values(tks, args); 
+        if (not t) return {};
+        
+        auto [cond, true_action, false_action] = t.value();
+        return cond != 0 ? true_action : false_action;
+    }
+
+
     auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_2arg_values(tks, args); 
