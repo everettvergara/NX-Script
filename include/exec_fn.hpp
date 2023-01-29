@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
+#include <tuple>
 #include "common_alias.hpp"
 
 
@@ -21,17 +22,25 @@ namespace eg
         return tk.get_value();
     }
 
-    auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    auto get_2arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP>> 
     {
-        if (args.size() != 2) return {};
-
         auto a1 = get_arg_value(0, tks, args);
         if (not a1) return {};
 
         auto a2 = get_arg_value(1, tks, args);
         if (not a2) return {};
 
-        return (a1 != 0) xor (a2 != 0);
+        return std::tuple(a1.value(), a2.value());
+    }
+
+    auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (args.size() != 2) return {};
+
+        auto t = get_2arg_values(tks, args); if (not t) return {};
+        auto [a, b] = t.value();
+
+        return (a != 0) xor (b != 0);
     }
 
     auto exec_fn_or(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
