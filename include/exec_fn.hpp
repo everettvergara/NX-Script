@@ -20,7 +20,7 @@ namespace eg
         return tk.get_value();
     }
 
-    auto get_1arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    auto get_1arg_value(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (args.size() != 1) return {};
 
@@ -72,19 +72,10 @@ namespace eg
 
     auto exec_fn_not(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 1) return {};
-
-        auto tk_id = std::get<0>(args.front());
+        auto t = get_1arg_value(tks, args); 
+        if (not t) return {};
         
-        auto f = tks.find(tk_id);
-        if (f == tks.end()) return {};
-
-        auto &tk = f->second;
-        if (not tk.get_value()) return {};
-
-        std::cout << tk.get_token_name() << ": " << *tk.get_value() << std::endl;
-
-        return *tk.get_value() == 0 ? 1 : 0;
+        return t.value() == 0 ? 1 : 0;
     }
 
     auto exec_fn_greater_than_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -161,23 +152,15 @@ namespace eg
 
     auto exec_fn_sqrt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 1) return {};
+        auto t = get_1arg_value(tks, args); 
+        if (not t) return {};
 
-        auto tk_id = std::get<0>(args.front());
-        
-        auto f = tks.find(tk_id);
-        if (f == tks.end()) return {};
-
-        auto &tk = f->second;
-        if (not tk.get_value()) return {};
-
-        return static_cast<FP>(std::sqrt(*tk.get_value()));
+        return static_cast<FP>(std::sqrt(t.value()));
     }
 
     auto exec_fn_pi(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (not args.empty()) return {};
-
         return static_cast<FP>(3.1415926535);
     }
 
