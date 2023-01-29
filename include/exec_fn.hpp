@@ -53,7 +53,7 @@ namespace eg
         auto a2 = get_arg_value(1, tks, args);
         if (not a2) return {};
 
-        auto a3 = get_arg_value(1, tks, args);
+        auto a3 = get_arg_value(2, tks, args);
         if (not a3) return {};
 
 
@@ -139,7 +139,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return a < b;
+        return a < b ? 1 : 0;
     }
 
     auto exec_fn_not_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -148,7 +148,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return a != b;
+        return a != b ? 1 : 0;
     }
 
     auto exec_fn_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -157,7 +157,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return a == b;
+        return a == b ? 1 : 0;
     }
 
     auto exec_fn_min(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
