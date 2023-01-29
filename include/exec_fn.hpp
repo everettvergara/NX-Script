@@ -23,8 +23,7 @@ namespace eg
 
     auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 2)
-            return {};
+        if (args.size() != 2) return {};
 
         auto a1 = get_arg_value(0, tks, args);
         if (not a1) return {};
@@ -32,10 +31,8 @@ namespace eg
         auto a2 = get_arg_value(1, tks, args);
         if (not a2) return {};
 
-
-        return a1 == 1 xor a2 == 1;
+        return (a1 != 0) xor (a2 != 0);
     }
-
 
     auto exec_fn_or(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
