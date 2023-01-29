@@ -43,6 +43,24 @@ namespace eg
         return std::tuple(a1.value(), a2.value());
     }
 
+    auto get_3arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP, FP>> 
+    {
+        if (args.size() != 3) return {};
+
+        auto a1 = get_arg_value(0, tks, args);
+        if (not a1) return {};
+
+        auto a2 = get_arg_value(1, tks, args);
+        if (not a2) return {};
+
+        auto a3 = get_arg_value(1, tks, args);
+        if (not a3) return {};
+
+
+        return std::tuple(a1.value(), a2.value(), a3.value());
+    }
+
+
     auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_2arg_values(tks, args); 
@@ -211,7 +229,7 @@ namespace eg
         using namespace std::placeholders;
         static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
         {
-            //{"$if",    std::bind(&exec_fn_if, _1, _2)},
+            {"$if",    std::bind(&exec_fn_if, _1, _2)},
 
             {"$eq",    std::bind(&exec_fn_eq, _1, _2)},
             {"$neq",    std::bind(&exec_fn_not_eq, _1, _2)},
