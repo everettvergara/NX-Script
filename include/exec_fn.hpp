@@ -6,10 +6,8 @@
 #include <tuple>
 #include "common_alias.hpp"
 
-
 namespace eg
 {
-
     auto get_arg_value(const size_t ix, const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto tk_id = std::get<0>(args.at(ix));
@@ -20,6 +18,16 @@ namespace eg
         if (not tk.get_value()) return {};
 
         return tk.get_value();
+    }
+
+    auto get_1arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (args.size() != 1) return {};
+
+        auto a = get_arg_value(0, tks, args);
+        if (not a) return {};
+
+        return a.value();
     }
 
     auto get_2arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP>> 
@@ -52,7 +60,6 @@ namespace eg
         auto [a, b] = t.value();
         return (a != 0) or (b != 0);
     }
-
 
     auto exec_fn_and(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
@@ -115,7 +122,6 @@ namespace eg
         auto [a, b] = t.value();
         return a < b;
     }
-
 
     auto exec_fn_not_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
