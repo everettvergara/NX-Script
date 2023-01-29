@@ -56,10 +56,8 @@ namespace eg
         auto a3 = get_arg_value(2, tks, args);
         if (not a3) return {};
 
-
         return std::tuple(a1.value(), a2.value(), a3.value());
     }
-
 
     auto exec_fn_if(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
@@ -70,14 +68,13 @@ namespace eg
         return cond != 0 ? true_action : false_action;
     }
 
-
     auto exec_fn_xor(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_2arg_values(tks, args); 
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return (a != 0) xor (b != 0);
+        return ((a != 0) xor (b != 0)) ? 1 : 0;
     }
 
     auto exec_fn_or(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -86,7 +83,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return (a != 0) or (b != 0);
+        return ((a != 0) or (b != 0)) ? 1 : 0;
     }
 
     auto exec_fn_and(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -95,7 +92,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return (a != 0) and (b != 0);
+        return ((a != 0) and (b != 0)) ? 1 : 0;
     }
 
     auto exec_fn_not(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -112,7 +109,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return a >= b;
+        return a >= b ? 1 : 0;
     }
 
     auto exec_fn_greater_than(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -121,7 +118,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return a > b;
+        return a > b ? 1 : 0;
     }
 
     auto exec_fn_less_than_eq(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -130,7 +127,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
-        return a <= b;
+        return a <= b ? 1 : 0;
     }
 
     auto exec_fn_less_than(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
