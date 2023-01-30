@@ -40,7 +40,7 @@ namespace eg
 
             for (const auto lno : line_seq)
             {
-                // std::cout << lno << ": ";
+                std::cout << lno << ": ";
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
@@ -94,14 +94,14 @@ namespace eg
             return true;
         }
 
-        auto process_var_with_assign(token &tk, std::stack<FP> &result) -> bool
-        {
-            if (result.size() < 1)
-                return set_err<bool, false>(ERR_EXPECTING_AT_LEAST_1_RESULT, tk.get_token_name());
+        // auto process_var_with_assign(token &tk, std::stack<FP> &result) -> bool
+        // {
+        //     if (result.size() < 1)
+        //         return set_err<bool, false>(ERR_EXPECTING_AT_LEAST_1_RESULT, tk.get_token_name());
 
-            tk.get_value() = result.top();
-            return true;
-        }
+        //     tk.get_value() = result.top();
+        //     return true;
+        // }
 
         auto process_op(token &tk, std::stack<FP> &result) -> bool
         {
@@ -168,7 +168,7 @@ namespace eg
         {
             std::stack<FP> result;
 
-            bool requires_tk_var_assignment = false;
+            // bool requires_tk_var_assignment = false;
 
             for (const auto tk_id : pf_ptk)
             {
@@ -179,15 +179,14 @@ namespace eg
 
                     process_num(tk, result);
                 
-                } else if (is_token_type_var(tt) and not requires_tk_var_assignment) {
+                } else if (is_token_type_var(tt)) {
 
                     if (not process_var(tk, result))
                         return false;
 
-                } else if (is_token_type_var(tt) and requires_tk_var_assignment) {
-
-                    if (not process_var_with_assign(tk, result))
-                        return false;
+                // } else if (is_token_type_var(tt) and requires_tk_var_assignment) {
+                //     if (not process_var_with_assign(tk, result))
+                //         return false;
 
                 } else if (is_token_type_fn(tt)) {
 
@@ -204,10 +203,6 @@ namespace eg
                     if (not process_op(tk, result))
                         return false;
                     
-                    requires_tk_var_assignment = true;
-                    // Peek if next pf_ptk is a variable
-                    // if yes, pop and assigned 
-
                 } else if (is_token_type_stop(tt)) {
                     
                     process_stop(result);
@@ -218,9 +213,6 @@ namespace eg
 
                 }
             }
-            
-            if (requires_tk_var_assignment)
-                return set_err<bool, false>(ERR_EXPECTING_VAR_ASSIGN, line);
 
             if (result.size() != 1)
                 return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, line);
