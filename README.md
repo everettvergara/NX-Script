@@ -21,9 +21,12 @@ diff = 10;
 
 i = 0;
 
-$while( $less_eq(i, 10),
-
-        le = (x + diff) / width,
-
-        $prt(le));
+$for(1, 10, 1, 
+        
+        $bl
+        (
+            le = (x + diff) / width,
+            
+        )
+    );
         

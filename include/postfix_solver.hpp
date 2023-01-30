@@ -77,6 +77,14 @@ namespace eg
             result.push(*value);
         }
 
+        auto process_var(token &tk) -> bool
+        {
+            auto &value = tk.get_value();
+            if (not value) 
+                return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
+            return true;
+        }
+
         auto process_var(token &tk, std::stack<FP> &result) -> bool
         {
             auto &value = tk.get_value();
@@ -127,7 +135,7 @@ namespace eg
                             return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk.get_token_name());
                     
                     } else {
-                        std::cout << "invalid token of param: " << tt_tk_param << std::endl;
+
                         return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
                     }
                 }
