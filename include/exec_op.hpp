@@ -5,6 +5,16 @@
 
 namespace eg
 {
+
+    auto exec_op_assign(std::stack<FP> &result) -> std::optional<FP>
+    {
+        if (result.size() < 1)
+            return {};
+
+        auto r = result.top(); result.pop();
+        return r;
+    }
+
     auto exec_op_add(std::stack<FP> &result) -> std::optional<FP>
     {
         if (result.size() < 2)
@@ -67,6 +77,7 @@ namespace eg
             {TT_OP_SUB, std::bind(&exec_op_sub, _1)},
             {TT_OP_MUL, std::bind(&exec_op_mul, _1)},
             {TT_OP_DIV, std::bind(&exec_op_div, _1)},
+            {TT_ASSIGN, std::bind(&exec_op_assign, _1)},
         };    
 
         auto f = fn_signature.find(tt); 

@@ -178,7 +178,7 @@ namespace eg
                     if (not process_fn(tks, tk, result)) 
                         return false;
 
-                } else if (is_token_type_op(tt)) {
+                } else if (is_token_type_op(tt) or is_token_type_assignment(tt)) {
 
                     if (not process_op(tk, result))
                         return false;
