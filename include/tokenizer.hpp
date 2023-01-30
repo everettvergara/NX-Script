@@ -74,12 +74,12 @@ namespace eg
                 auto &tks           = data_.get_tokens();
                 auto &tk_name_tk_id = data_.get_token_name_token_id();
 
-                if (is_token_type_fn(tt)) 
+                if (is_token_type_fn(tt))
                     fn_tk_ids.emplace_back(
                                 ptk.emplace_back(
                                     add_token(tks, tk_name_tk_id, TT_FN, *tk_sv)));
                 
-                else if (tt == TT_PARAM)
+                else if (is_token_type_tt_param(tt))
                     ptk.emplace_back(
                             add_token_of_fn_param(*tk_sv));
                 

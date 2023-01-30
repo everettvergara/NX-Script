@@ -8,29 +8,31 @@ using eg::nx_script;
 
 auto main() -> int
 {
-    std::string str
-    {   
-        "var1 = 1000;"
-        "var2 = 2000;"
-        "var3 = 3000;"
-        "$prt($min(500, $max(var1, $min(var2, var3))));"
-        "fin = $if($eq(var1, var2), 100, 500);"
-        "$prt(var1, var2, var3, fin);"
-        "$prt(var1, var2);"
-    };
 
+    // TODO: NEeed to add double assignment a = x = 1
     // std::string str
     // {   
-    //     "$("
-    //     "var1 = 1000,"
-    //     "var2 = 2000,"
-    //     "var3 = 3000,"
-    //     "$prt($min(500, $max(var1, $min(var2, var3)))),"
-    //     "fin = $if($eq(var1, var2), 100, 500),"
-    //     "$prt(var1, var2, var3, fin),"
-    //     "$prt(var1, var2),"
-    //     ");"
+    //     "var1 = x = 1000;"
+    //     "var2 = 2000;"
+    //     "var3 = 3000;"
+    //     "$prt($min(500, $max(var1, $min(var2, var3))));"
+    //     "fin = $if($eq(var1, var2), 100, 500);"
+    //     "$prt(var1, var2, var3, fin);"
+    //     "$prt(var1, var2);"
     // };
+
+    std::string str
+    {   
+        "$("
+        "var1 = 1000,"
+        "var2 = 2000,"
+        "var3 = 3000,"
+        "$prt($min(500, $max(var1, $min(var2, var3)))),"
+        "fin = $if($eq(var1, var2), 100, 500),"
+        "$prt(var1, var2, var3, fin),"
+        "$prt(var1, var2),"
+        ");"
+    };
 
 
         // "x = (5 * 2);"

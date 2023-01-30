@@ -50,6 +50,7 @@ namespace eg
             case TT_OP_SUB:     return 40;
             case TT_PAR_OPEN:   return 10;
             case TT_PAR_CLOSE:  return 10;
+            case TT_ASSIGN:     return 0;
             default:            return {};
         }
     }
@@ -288,7 +289,7 @@ namespace eg
         return true;
     }
 
-    auto is_token_type_assignable(token_type tt) -> bool
+    auto is_token_type_assignment(token_type tt) -> bool
     {
         if (tt == TT_ASSIGN) 
             return true;

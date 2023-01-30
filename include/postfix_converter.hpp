@@ -94,8 +94,9 @@ namespace eg
                 if (is_token_type_var_num_fn(tt))                                   pf_ptk.emplace_back(id);
                 else if (is_token_type_open_par(tt))                                do_open_par(id);
                 else if (is_token_type_close_par(tt) and not do_close_par())        break;
-                else if (is_token_type_op(tt))                                      do_operator(tt, id);
+                else if (is_token_type_op(tt) or is_token_type_assignment(tt))      do_operator(tt, id);
                 else if (is_token_type_stop(tt))                                    pf_ptk.emplace_back(id);
+//                else if (is_token_type_assignment(tt))                              std::cout << "***hello***";
                 else if (not is_token_type_end_of_line(tt))                         set_err<std::optional<parsable_tokens>>(ERR_UNEXPECTED_TOKEN); 
             }
 
