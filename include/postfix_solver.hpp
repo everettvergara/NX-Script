@@ -94,6 +94,15 @@ namespace eg
             return true;
         }
 
+        auto process_var_with_assign(token &tk, std::stack<FP> &result) -> bool
+        {
+            if (result.size() < 1)
+                return set_err<bool, false>(ERR_EXPECTING_AT_LEAST_1_RESULT, tk.get_token_name());
+
+            tk.get_value() = result.top();
+            return true;
+        }
+
         auto process_op(token &tk, std::stack<FP> &result) -> bool
         {
             auto op = get_token_op_executor(tk.get_token_type());
@@ -159,7 +168,9 @@ namespace eg
         {
             std::stack<FP> result;
 
-            for (auto tk_id : pf_ptk)
+            bool requires_tk_var_assignment = false;
+
+            for (const auto tk_id : pf_ptk)
             {
                 auto &tk        = tks.find(tk_id)->second;
                 const auto tt   = tk.get_token_type();
@@ -168,9 +179,14 @@ namespace eg
 
                     process_num(tk, result);
                 
-                } else if (is_token_type_var(tt)) {
+                } else if (is_token_type_var(tt) and not requires_tk_var_assignment) {
 
                     if (not process_var(tk, result))
+                        return false;
+
+                } else if (is_token_type_var(tt) and requires_tk_var_assignment) {
+
+                    if (not process_var_with_assign(tk, result))
                         return false;
 
                 } else if (is_token_type_fn(tt)) {
@@ -178,10 +194,19 @@ namespace eg
                     if (not process_fn(tks, tk, result)) 
                         return false;
 
-                } else if (is_token_type_op(tt) or is_token_type_assignment(tt)) {
+                } else if (is_token_type_op(tt)) {
 
                     if (not process_op(tk, result))
                         return false;
+
+                } else if (is_token_type_assignment(tt)) {
+
+                    if (not process_op(tk, result))
+                        return false;
+                    
+                    requires_tk_var_assignment = true;
+                    // Peek if next pf_ptk is a variable
+                    // if yes, pop and assigned 
 
                 } else if (is_token_type_stop(tt)) {
                     
@@ -193,6 +218,9 @@ namespace eg
 
                 }
             }
+            
+            if (requires_tk_var_assignment)
+                return set_err<bool, false>(ERR_EXPECTING_VAR_ASSIGN, line);
 
             if (result.size() != 1)
                 return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, line);

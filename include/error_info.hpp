@@ -16,6 +16,9 @@ namespace eg
         ERR_FN_PAR_EXCEED_VARIADIC,
         ERR_STACK_OVERFLOW,
         ERR_PAR_MISMATCHED,
+        ERR_EXPECTING_VAR_ASSIGN,
+        ERR_EXPECTING_AT_LEAST_1_RESULT,
+
         ERR_UNEXPECTED_TOKEN,
         ERR_VAR_UNINIT,
         ERR_TT_PARAM_UNINIT,
@@ -44,6 +47,8 @@ namespace eg
                 case ERR_FN_PAR_INC:        return "Function parameter is incorrect.";
                 case ERR_FN_PAR_EXCEED_VARIADIC:    return "Function parameter exceeds variadic parameters";
                 case ERR_PAR_MISMATCHED:    return "Mismatched Parenthesis.";
+                case ERR_EXPECTING_VAR_ASSIGN:      return "Expecting variable assignment.";
+                case ERR_EXPECTING_AT_LEAST_1_RESULT:   return "Expecting at least one result for assignment.";
                 case ERR_UNEXPECTED_TOKEN:  return "Unexpected token!.";
                 case ERR_VAR_UNINIT:        return "Uninitialized variable.";
                 case ERR_TT_PARAM_UNINIT:   return "Uninitialized token parameter result.";
