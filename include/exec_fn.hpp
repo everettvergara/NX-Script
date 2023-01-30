@@ -201,13 +201,10 @@ namespace eg
         return 0.0;
     }
 
-    auto exec_fn_prt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    auto exec_fn_block(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-// if (args.size() != 1) return {};
         for (auto [tk_id, sv] : args)
         {
-//            auto tk_id = std::get<0>(args.front());
-            
             auto f = tks.find(tk_id);
             if (f == tks.end()) return {};
 
@@ -218,8 +215,27 @@ namespace eg
         }
 
         std::cout << std::endl;
-        
-        return 0; // *tk.get_value();
+
+        return 0;
+    }
+
+
+    auto exec_fn_prt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        for (auto [tk_id, sv] : args)
+        {
+            auto f = tks.find(tk_id);
+            if (f == tks.end()) return {};
+
+            auto &tk = f->second;
+            if (not tk.get_value()) return {};
+
+            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
+        }
+
+        std::cout << std::endl;
+
+        return 0;
     }
 
     auto exec_fn_pow(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -240,6 +256,8 @@ namespace eg
         using namespace std::placeholders;
         static std::unordered_map<std::string_view, std::function<auto (const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP>>> fn_signature
         {
+            {"$",    std::bind(&exec_fn_block, _1, _2)},
+
             {"$if",    std::bind(&exec_fn_if, _1, _2)},
 
             {"$eq",    std::bind(&exec_fn_eq, _1, _2)},
@@ -274,6 +292,7 @@ namespace eg
     {
         static std::unordered_map<std::string_view, int32_t> fn_signature
         {
+            {"$",      std::numeric_limits<int32_t>::min()},
             {"$if",    3},
 
             {"$eq",    2},
@@ -293,7 +312,7 @@ namespace eg
             {"$min",   2},
             {"$max",   2},
 
-            {"$prt",   -10},
+            {"$prt",   std::numeric_limits<int32_t>::min()},
             {"$sqrt",  1},
             {"$pow",   2},
 

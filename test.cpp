@@ -1,4 +1,4 @@
-// D:\Everett\Codes\Projects\Personal\NX-Solver\bin-win\
+// D:\Everett\Codes\Projects\Personal\NX-Solver\bin-win
 #include <iostream>
 #include <string>
 
@@ -16,6 +16,22 @@ auto main() -> int
         "$prt($min(500, $max(var1, $min(var2, var3))));"
         "fin = $if($eq(var1, var2), 100, 500);"
         "$prt(var1, var2, var3, fin);"
+        "$prt(var1, var2);"
+    };
+
+    // std::string str
+    // {   
+    //     "$("
+    //     "var1 = 1000,"
+    //     "var2 = 2000,"
+    //     "var3 = 3000,"
+    //     "$prt($min(500, $max(var1, $min(var2, var3)))),"
+    //     "fin = $if($eq(var1, var2), 100, 500),"
+    //     "$prt(var1, var2, var3, fin),"
+    //     "$prt(var1, var2),"
+    //     ");"
+    // };
+
 
         // "x = (5 * 2);"
         // "x = x + 1;"
@@ -23,7 +39,6 @@ auto main() -> int
         // "w = $pow(x , 2);"
         // "z = $sqrt(x * x + y * y + w);"
         // "$prt(z);"
-    };
 
     // std::string str
     // {   

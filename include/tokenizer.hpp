@@ -132,10 +132,10 @@ namespace eg
             if (not val_params) 
                 return set_err<std::optional<script_list>>(ERR_FN_NOT_FOUND, tk.get_token_name());
             
-            if (val_params.value() >= 0 and val_params.value() != params.size()) 
+            if (val_params.value() >= 0 and static_cast<size_t>(val_params.value()) != params.size()) 
                 return set_err<std::optional<script_list>>(ERR_FN_PAR_INC, tk.get_token_name());
             
-            else if (val_params.value() < 0 and params.size() > -val_params.value() )
+            else if (val_params.value() < 0 and params.size() > static_cast<size_t>(-val_params.value()))
                 return set_err<std::optional<script_list>>(ERR_FN_PAR_EXCEED_VARIADIC, tk.get_token_name());
 
             tk.get_fn_name() = fn;
