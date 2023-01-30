@@ -13,6 +13,7 @@ namespace eg
         ERR_PARSE_FN,
         ERR_FN_NOT_FOUND,
         ERR_FN_PAR_INC,
+        ERR_FN_PAR_EXCEED_VARIADIC,
         ERR_STACK_OVERFLOW,
         ERR_PAR_MISMATCHED,
         ERR_UNEXPECTED_TOKEN,
@@ -41,6 +42,7 @@ namespace eg
                 case ERR_PARSE_FN:          return "Parse function error.";
                 case ERR_FN_NOT_FOUND:      return "Function signature not found.";
                 case ERR_FN_PAR_INC:        return "Function parameter is incorrect.";
+                case ERR_FN_PAR_EXCEED_VARIADIC:    return "Function parameter exceeds variadic parameters";
                 case ERR_PAR_MISMATCHED:    return "Mismatched Parenthesis.";
                 case ERR_UNEXPECTED_TOKEN:  return "Unexpected token!.";
                 case ERR_VAR_UNINIT:        return "Uninitialized variable.";

@@ -203,19 +203,23 @@ namespace eg
 
     auto exec_fn_prt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        if (args.size() != 1) return {};
+// if (args.size() != 1) return {};
+        for (auto [tk_id, sv] : args)
+        {
+//            auto tk_id = std::get<0>(args.front());
+            
+            auto f = tks.find(tk_id);
+            if (f == tks.end()) return {};
 
-        auto tk_id = std::get<0>(args.front());
+            auto &tk = f->second;
+            if (not tk.get_value()) return {};
+
+            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
+        }
+
+        std::cout << std::endl;
         
-        auto f = tks.find(tk_id);
-        if (f == tks.end()) return {};
-
-        auto &tk = f->second;
-        if (not tk.get_value()) return {};
-
-        std::cout << tk.get_token_name() << ": " << *tk.get_value() << std::endl;
-
-        return *tk.get_value();
+        return 0; // *tk.get_value();
     }
 
     auto exec_fn_pow(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -266,9 +270,9 @@ namespace eg
         return {};
     }
 
-    auto get_token_fn_signature(std::string_view str) -> std::optional<size_t>
+    auto get_token_fn_signature(std::string_view str) -> std::optional<int32_t>
     {
-        static std::unordered_map<std::string_view, size_t> fn_signature
+        static std::unordered_map<std::string_view, int32_t> fn_signature
         {
             {"$if",    3},
 
@@ -289,7 +293,7 @@ namespace eg
             {"$min",   2},
             {"$max",   2},
 
-            {"$prt",   1},
+            {"$prt",   -10},
             {"$sqrt",  1},
             {"$pow",   2},
 

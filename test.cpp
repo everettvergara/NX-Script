@@ -15,7 +15,7 @@ auto main() -> int
         "var3 = 3000;"
         "$prt($min(500, $max(var1, $min(var2, var3))));"
         "fin = $if($eq(var1, var2), 100, 500);"
-        "$prt(fin);"
+        "$prt(var1, var2, var3, fin);"
 
         // "x = (5 * 2);"
         // "x = x + 1;"

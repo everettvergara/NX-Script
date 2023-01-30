@@ -23,8 +23,7 @@ i = 0;
 
 $for(1, 10, 1, 
         
-        $bl
-        (
+        $(
             le = (x + diff) / width,
             
         )
