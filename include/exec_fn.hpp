@@ -68,6 +68,63 @@ namespace eg
         return std::tuple(a1.value(), a2.value(), a3.value());
     }
 
+    auto get_4arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP, FP, FP>> 
+    {
+        if (args.size() != 3) return {};
+
+        auto a1 = get_arg_value(0, tks, args);
+        if (not a1) return {};
+
+        auto a2 = get_arg_value(1, tks, args);
+        if (not a2) return {};
+
+        auto a3 = get_arg_value(2, tks, args);
+        if (not a3) return {};
+
+        auto a4 = get_arg_value(3, tks, args);
+        if (not a4) return {};
+
+        return std::tuple(a1.value(), a2.value(), a3.value(), a3.value());
+    }
+
+
+
+    auto get_5arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP, FP, FP, FP>> 
+    {
+        if (args.size() != 3) return {};
+
+        auto a1 = get_arg_value(0, tks, args);
+        if (not a1) return {};
+
+        auto a2 = get_arg_value(1, tks, args);
+        if (not a2) return {};
+
+        auto a3 = get_arg_value(2, tks, args);
+        if (not a3) return {};
+
+        auto a4 = get_arg_value(3, tks, args);
+        if (not a4) return {};
+
+        auto a5 = get_arg_value(4, tks, args);
+        if (not a5) return {};
+
+        return std::tuple(a1.value(), a2.value(), a3.value(), a3.value(), a4.value());
+    }
+
+
+
+    auto exec_fn_for(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto t = get_5arg_values(tks, args); 
+        if (not t) return {};
+        
+        auto [s, e, cond, inc, fn] = t.value();
+
+
+        return 0.0; // cond != 0 ? true_action : false_action;
+    }
+
+
     auto exec_fn_if(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_3arg_values(tks, args); 
@@ -268,6 +325,7 @@ namespace eg
             {"$",    std::bind(&exec_fn_block, _1, _2)},
 
             {"$if",    std::bind(&exec_fn_if, _1, _2)},
+            {"$for",    std::bind(&exec_fn_for, _1, _2)},
 
             {"$eq",    std::bind(&exec_fn_eq, _1, _2)},
             {"$neq",    std::bind(&exec_fn_not_eq, _1, _2)},
@@ -303,6 +361,7 @@ namespace eg
         {
             {"$",      std::numeric_limits<int32_t>::min()},
             {"$if",    3},
+            {"$for",   4},
 
             {"$eq",    2},
             {"$neq",   2},
