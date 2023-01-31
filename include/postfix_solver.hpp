@@ -67,6 +67,9 @@ namespace eg
 
         auto process_num(token &tk, std::stack<token_id> &result)
         {
+            auto &value = tk.get_value();
+            if (not value) 
+                value = svton<FP>(tk.get_token_name());        
             result.push(tk.get_token_id());
         }
 
@@ -189,7 +192,11 @@ namespace eg
                 return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, line);
 
             if (lvalue_tk_id) 
-                tks.find(lvalue_tk_id)->second.get_value() = result.top();
+            {
+                auto tk_id_of_result = result.top();
+                auto &final_result = tks.find(tk_id_of_result)->second;
+                tks.find(lvalue_tk_id)->second.get_value() = final_result.get_value().value();            
+            }
 
             return true;
         }
