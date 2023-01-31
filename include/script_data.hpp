@@ -32,6 +32,7 @@ namespace eg
         token_data              token_data_;
 
         token_id                result_token_id_;
+        token_id                stop_token_id_;
 
     public:
 
@@ -45,6 +46,11 @@ namespace eg
         auto get_result_token_id() -> token_id &
         {
             return result_token_id_;
+        }
+
+        auto get_stop_token_id() -> token_id &
+        {
+            return stop_token_id_;
         }
 
 
