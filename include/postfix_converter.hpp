@@ -77,20 +77,6 @@ namespace eg
                                     ops.push(tk_id);
                                 };
 
-            auto do_assignment =    [&](const token_type tt, const token_id tk_id) -> void {
-                                    // auto prio = get_pop_prio(tt);
-
-                                    // while (not ops.empty())
-                                    // {
-                                    //     auto op_tk_id = ops.top();
-                                    //     auto &tk = data_.get_tokens().find(op_tk_id)->second;
-                                    //     if (prio > get_pop_prio(tk.get_token_type())) break;
-                                    //     pf_ptk.emplace_back(ops.top());
-                                    //     ops.pop();
-                                    // } 
-                                    // ops.push(tk_id);
-                                };
-
             auto push_remaining_to_pf_ptk = [&]() -> void {
                                                 while (not ops.empty())
                                                 {
@@ -99,14 +85,6 @@ namespace eg
                                                 }
                                             };
 
-            // x = y = 1 
-            // 1 = y = x
-/*
-            x y
-            =           =
-            
-*/
-        
             for (; tk_id != ptk.end(); ++tk_id)
             {
                 auto &tk = data_.get_tokens().find(*tk_id)->second;
@@ -117,7 +95,7 @@ namespace eg
                 else if (is_token_type_open_par(tt))                                do_open_par(id);
                 else if (is_token_type_close_par(tt) and not do_close_par())        break;
                 else if (is_token_type_op(tt))                                      do_operator(tt, id);
-                else if (is_token_type_assignment(tt))                              do_assignment(tt, id);
+                else if (is_token_type_assignment(tt))                              do_operator(tt, id);
                 else if (is_token_type_stop(tt))                                    pf_ptk.emplace_back(id);
                 else if (not is_token_type_end_of_line(tt))                         set_err<std::optional<parsable_tokens>>(ERR_UNEXPECTED_TOKEN); 
             }

@@ -57,8 +57,9 @@ namespace eg
 
     private:
         
-        auto process_stop(std::stack<FP> &result)
+        auto process_stop(std::stack<token_id> &result)
         {
+            // Add token ID of stop
             result.push(0);
         }
 
@@ -69,7 +70,7 @@ namespace eg
                 value = svton<FP>(tk.get_token_name());
         }
 
-        auto process_num(token &tk, std::stack<FP> &result)
+        auto process_num(token &tk, std::stack<token_id> &result)
         {
             auto &value = tk.get_value();
             if (not value) 
@@ -85,7 +86,7 @@ namespace eg
             return true;
         }
 
-        auto process_var(token &tk, std::stack<FP> &result) -> bool
+        auto process_var(token &tk, std::stack<token_id> &result) -> bool
         {
             auto &value = tk.get_value();
             if (not value) 
@@ -94,16 +95,7 @@ namespace eg
             return true;
         }
 
-        // auto process_var_with_assign(token &tk, std::stack<FP> &result) -> bool
-        // {
-        //     if (result.size() < 1)
-        //         return set_err<bool, false>(ERR_EXPECTING_AT_LEAST_1_RESULT, tk.get_token_name());
-
-        //     tk.get_value() = result.top();
-        //     return true;
-        // }
-
-        auto process_op(token &tk, std::stack<FP> &result) -> bool
+        auto process_op(token &tk, std::stack<token_id> &result) -> bool
         {
             auto op = get_token_op_executor(tk.get_token_type());
             
@@ -115,7 +107,7 @@ namespace eg
             return true;
         }
 
-        auto process_fn(tokens &tks, token &tk, std::stack<FP> &result) -> bool
+        auto process_fn(tokens &tks, token &tk, std::stack<token_id> &result) -> bool
         {
             auto &value = tk.get_value();
             if (not value)
@@ -166,9 +158,7 @@ namespace eg
 
         auto solve_line(tokens &tks, const parsable_tokens &pf_ptk, const script_line line, const token_id lvalue_tk_id) -> bool
         {
-            std::stack<FP> result;
-
-            // bool requires_tk_var_assignment = false;
+            std::stack<token_id> result;
 
             for (const auto tk_id : pf_ptk)
             {
@@ -183,10 +173,6 @@ namespace eg
 
                     if (not process_var(tk, result))
                         return false;
-
-                // } else if (is_token_type_var(tt) and requires_tk_var_assignment) {
-                //     if (not process_var_with_assign(tk, result))
-                //         return false;
 
                 } else if (is_token_type_fn(tt)) {
 
