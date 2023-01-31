@@ -29,8 +29,6 @@ namespace eg
             * '
             */
 
-            // Add Stop token
-            // Add global rvalue
             data_.get_result_token_id() = data_.get_tokens().emplace(token(TT_RESULT, "R")).first->first;
 
             for(size_t lno = 0; lno < data_.get_script_list().size(); ++lno) 
@@ -88,8 +86,12 @@ namespace eg
                             add_token_of_fn_param(*tk_sv));
                 
                 else
-                    ptk.emplace_back(
-                        add_token_id_if_not_exists_or_get_token_id_if_exists(tks, tk_name_tk_id, tt, *tk_sv));                
+                {
+                    auto tk_id = ptk.emplace_back(
+                                    add_token_id_if_not_exists_or_get_token_id_if_exists(tks, tk_name_tk_id, tt, *tk_sv));
+
+                    if (is_token_type_stop(tt)) data_.get_stop_token_id() = tk_id;
+                }
             }
 
             determine_lr_ness(data_, ptk);
