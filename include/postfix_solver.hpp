@@ -59,15 +59,7 @@ namespace eg
         
         auto process_stop(std::stack<token_id> &result)
         {
-            // Add token ID of stop
-            result.push(0);
-        }
-
-        auto process_num(token &tk)
-        {
-            auto &value = tk.get_value();
-            if (not value) 
-                value = svton<FP>(tk.get_token_name());
+            result.push(data_.get_stop_token_id());
         }
 
         auto process_num(token &tk, std::stack<token_id> &result)
@@ -123,7 +115,9 @@ namespace eg
 
                     if (is_token_type_num(tt_tk_param)) 
                     {
-                    process_num(tk_param);
+                        auto &value = tk.get_value();
+                        if (not value) 
+                            value = svton<FP>(tk.get_token_name());
 
                     } else if (is_token_type_var(tt_tk_param) or is_token_type_fn(tt_tk_param)) {
 
