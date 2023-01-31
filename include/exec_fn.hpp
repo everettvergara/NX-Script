@@ -15,7 +15,10 @@ namespace eg
         if (f == tks.end()) return {};
         
         auto &tk = f->second;
-        if (not tk.get_value()) return {};
+        if (not tk.get_value()) {
+            std::cout << "novalue!!!!" << std::endl;
+            return {};
+        }
 
         return tk.get_value();
     }
@@ -35,10 +38,16 @@ namespace eg
         if (args.size() != 2) return {};
 
         auto a1 = get_arg_value(0, tks, args);
-        if (not a1) return {};
+        if (not a1) {
+            std::cout << "arg1 error tkid: " << std::get<0>(args.at(0)) << std::endl;
+            return {};
+        }
 
         auto a2 = get_arg_value(1, tks, args);
-        if (not a2) return {};
+        if (not a2) {
+            std::cout << "arg2 error tkid: " << std::get<0>(args.at(1)) << std::endl;
+            return {};
+        }
 
         return std::tuple(a1.value(), a2.value());
     }

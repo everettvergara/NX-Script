@@ -89,7 +89,7 @@ namespace eg
             return true;
         }
 
-        auto process_fn(tokens &tks, token &tk, std::stack<token_id> &result) -> bool
+        auto process_fn(tokens &tks, token &tk_result, token &tk, std::stack<token_id> &result) -> bool
         {
             auto &value = tk.get_value();
             if (not value)
@@ -101,9 +101,9 @@ namespace eg
 
                     if (is_token_type_num(tt_tk_param)) 
                     {
-                        auto &value = tk.get_value();
+                        auto &value = tk_param.get_value();
                         if (not value) 
-                            value = svton<FP>(tk.get_token_name());
+                            value = svton<FP>(tk_param.get_token_name());
 
                     } else if (is_token_type_var(tt_tk_param) or is_token_type_fn(tt_tk_param)) {
 
@@ -134,7 +134,9 @@ namespace eg
                 value = *fn_result;
             } 
 
-            result.push(*value);
+            tk_result.get_value() = *value;
+            result.push(tk_result.get_token_id());
+
             return true;
         }
 
@@ -159,7 +161,7 @@ namespace eg
 
                 } else if (is_token_type_fn(tt)) {
 
-                    if (not process_fn(tks, tk, result)) 
+                    if (not process_fn(tks, tk_result, tk, result)) 
                         return false;
 
                 } else if (is_token_type_op(tt)) {
