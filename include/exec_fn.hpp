@@ -361,7 +361,7 @@ namespace eg
         {
             {"$",      std::numeric_limits<int32_t>::min()},
             {"$if",    3},
-            {"$for",   4},
+            {"$for",   5},
 
             {"$eq",    2},
             {"$neq",   2},
