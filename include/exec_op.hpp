@@ -6,7 +6,7 @@
 namespace eg
 {
 
-    auto exec_op_assign(std::stack<FP> &result) -> std::optional<FP>
+    auto exec_op_assign(std::stack<token_id> &result) -> std::optional<FP>
     {
         if (result.size() < 1)
             return {};
@@ -15,7 +15,7 @@ namespace eg
         return r;
     }
 
-    auto exec_op_add(std::stack<FP> &result) -> std::optional<FP>
+    auto exec_op_add(std::stack<token_id> &result) -> std::optional<FP>
     {
         if (result.size() < 2)
             return {};
@@ -28,7 +28,7 @@ namespace eg
         return r;
     }
 
-    auto exec_op_sub(std::stack<FP> &result) -> std::optional<FP>
+    auto exec_op_sub(std::stack<token_id> &result) -> std::optional<FP>
     {
         if (result.size() < 2)
             return {};
@@ -41,7 +41,7 @@ namespace eg
         return r;
     }
 
-    auto exec_op_mul(std::stack<FP> &result) -> std::optional<FP>
+    auto exec_op_mul(std::stack<token_id> &result) -> std::optional<FP>
     {
         if (result.size() < 2)
             return {};
@@ -54,7 +54,7 @@ namespace eg
         return r;
     }
 
-    auto exec_op_div(std::stack<FP> &result) -> std::optional<FP>
+    auto exec_op_div(std::stack<token_id> &result) -> std::optional<FP>
     {
         if (result.size() < 2)
             return {};
@@ -68,10 +68,10 @@ namespace eg
     }
 
     auto get_token_op_executor(const token_type tt) 
-            -> std::optional<std::function<auto (std::stack<FP> &) -> std::optional<FP>>>
+            -> std::optional<std::function<auto (std::stack<token_id> &) -> std::optional<FP>>>
     {
         using namespace std::placeholders;
-        static std::unordered_map<const token_type, std::function<auto (std::stack<FP> &) -> std::optional<FP>>> fn_signature
+        static std::unordered_map<const token_type, std::function<auto (std::stack<token_id> &) -> std::optional<FP>>> fn_signature
         {
             {TT_OP_ADD, std::bind(&exec_op_add, _1)},
             {TT_OP_SUB, std::bind(&exec_op_sub, _1)},
