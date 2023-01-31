@@ -90,7 +90,7 @@ namespace eg
             result.push(tk.get_token_id());
         }
 
-        auto process_op(token &tk, std::stack<token_id> &result) -> bool
+        auto process_op(token &tk_result, token &tk, std::stack<token_id> &result) -> bool
         {
             auto op = get_token_op_executor(tk.get_token_type());
             
@@ -98,8 +98,8 @@ namespace eg
             if (not op_result)
                 return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_token_name());
 
-            result.push(tk.get_token_id());
-//            result.push(*op_result);
+            tk_result.get_value() = op_result.value();
+            result.push(tk_result.get_token_id());
             return true;
         }
 
@@ -156,11 +156,13 @@ namespace eg
         {
             std::stack<token_id> result;
 
+            auto &tk_result = get_token(tks, data_.get_result_token_id());
+
             for (const auto tk_id : pf_ptk)
             {
                 auto &tk        = tks.find(tk_id)->second;
                 const auto tt   = tk.get_token_type();
-                
+
                 if (is_token_type_num(tt)) {
 
                     process_num(tk, result);
@@ -176,12 +178,12 @@ namespace eg
 
                 } else if (is_token_type_op(tt)) {
 
-                    if (not process_op(tk, result))
+                    if (not process_op(tk_result, tk, result))
                         return false;
 
                 } else if (is_token_type_assignment(tt)) {
 
-                    if (not process_op(tk, result))
+                    if (not process_op(tk_result, tk, result))
                         return false;
                     
                 } else if (is_token_type_stop(tt)) {

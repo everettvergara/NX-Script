@@ -376,7 +376,6 @@ namespace eg
         return false;
     }
 
-
     auto is_token_type_var_num_fn(token_type tt) -> bool
     {
         if (tt == TT_VAR or tt == TT_NUM or tt == TT_FN) 
