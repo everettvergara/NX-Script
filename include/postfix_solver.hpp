@@ -65,17 +65,19 @@ namespace eg
 
         auto process_num(token &tk)
         {
-            auto &value = tk.get_value();
-            if (not value) 
-                value = svton<FP>(tk.get_token_name());
+            // auto &value = tk.get_value();
+            // if (not value) 
+            //     value = svton<FP>(tk.get_token_name());
         }
 
         auto process_num(token &tk, std::stack<token_id> &result)
         {
-            auto &value = tk.get_value();
-            if (not value) 
-                value = svton<FP>(tk.get_token_name());
-            result.push(*value);
+            // auto &value = tk.get_value();
+            // if (not value) 
+            //     value = svton<FP>(tk.get_token_name());
+            //result.push(*value);
+            
+            result.push(tk.get_token_id());
         }
 
         auto process_var(token &tk) -> bool
@@ -86,13 +88,14 @@ namespace eg
             return true;
         }
 
-        auto process_var(token &tk, std::stack<token_id> &result) -> bool
+        auto process_var(token &tk, std::stack<token_id> &result)
         {
-            auto &value = tk.get_value();
-            if (not value) 
-                return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
-            result.push(*value);
-            return true;
+            // auto &value = tk.get_value();
+            // if (not value) 
+            //     return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
+            // result.push(*value);
+
+            result.push(tk.get_token_id());
         }
 
         auto process_op(token &tk, std::stack<token_id> &result) -> bool
