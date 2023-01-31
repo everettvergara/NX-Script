@@ -26,6 +26,7 @@ namespace eg
         ERR_EVALUATING_OP_EXP,
         ERR_UNEXPECTED_RESULT,
         ERR_FN_INVALID_OUTPUT,
+        ERR_OP_INVALID_OUTPUT,
         ERR_UNKNOWN,
     };
 
@@ -56,6 +57,7 @@ namespace eg
                 case ERR_EVALUATING_OP_EXP: return "Error evaluating the operator expression.";
                 case ERR_UNEXPECTED_RESULT: return "Unexpected result.";
                 case ERR_FN_INVALID_OUTPUT: return "Invalid function output.";
+                case ERR_OP_INVALID_OUTPUT: return "Invalid operator output.";
                 default:                    return "Unknown critical error.";
             }
         }

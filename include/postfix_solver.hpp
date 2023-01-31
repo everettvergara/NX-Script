@@ -84,7 +84,7 @@ namespace eg
             
             auto op_result = op.value()(tks, result);
             if (not op_result)
-                return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_token_name());
+                return set_err<bool, false>(ERR_OP_INVALID_OUTPUT, tk.get_token_name());
 
             tk_result.get_value() = op_result.value();
             result.push(tk_result.get_token_id());

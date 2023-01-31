@@ -14,8 +14,10 @@ namespace eg
         auto v2_id = result.top(); result.pop();
         auto v1_id = result.top(); result.pop();
 
-        auto &v1 = get_token(tks, v1_id); if (not v1.get_value()) return {};
         auto &v2 = get_token(tks, v2_id); if (not v2.get_value()) return {};
+
+        auto &v1 = get_token(tks, v1_id); 
+        if (not is_token_type_var(v1.get_token_type())) return {};
         
         FP r = v2.get_value().value();
         v1.get_value() = r;

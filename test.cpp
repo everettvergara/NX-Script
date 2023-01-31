@@ -12,8 +12,8 @@ auto main() -> int
     // TODO: NEeed to add double assignment a = x = 1
     std::string str
     {   
-        "var1 = 1000;"
-        "$prt(var1);"
+        "var1 = var0 = 1000;"
+        "$prt(var0);"
         "var2 = 2000;"
         "var3 = 3000;"
         "$prt($min(500, $max(var1, $min(var2, var3))));"
