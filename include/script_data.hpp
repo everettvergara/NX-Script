@@ -47,6 +47,7 @@ namespace eg
             return result_token_id_;
         }
 
+
         auto get_script_list() -> script_list &
         {
             return script_list_;
