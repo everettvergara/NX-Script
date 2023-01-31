@@ -15,10 +15,8 @@ namespace eg
         if (f == tks.end()) return {};
         
         auto &tk = f->second;
-        if (not tk.get_value()) {
-            std::cout << "novalue!!!!" << std::endl;
+        if (not tk.get_value())
             return {};
-        }
 
         return tk.get_value();
     }
@@ -70,7 +68,7 @@ namespace eg
 
     auto get_4arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP, FP, FP>> 
     {
-        if (args.size() != 3) return {};
+        if (args.size() != 4) return {};
 
         auto a1 = get_arg_value(0, tks, args);
         if (not a1) return {};
@@ -91,7 +89,7 @@ namespace eg
 
     auto get_5arg_values(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<std::tuple<FP, FP, FP, FP, FP>> 
     {
-        if (args.size() != 3) return {};
+        if (args.size() != 5) return {};
 
         auto a1 = get_arg_value(0, tks, args);
         if (not a1) return {};
@@ -111,15 +109,21 @@ namespace eg
         return std::tuple(a1.value(), a2.value(), a3.value(), a3.value(), a4.value());
     }
 
-
-
     auto exec_fn_for(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_5arg_values(tks, args); 
         if (not t) return {};
         
-        auto [s, e, cond, inc, fn] = t.value();
+        // auto [s, e, cond, inc, fn] = t.value();
 
+        // while (cond == 1.0)
+        // {
+
+        //     // $block should be executed
+        //     // Delta should be execd first
+        //     // Condition should be execd first 
+        //     cond = get_arg_value(2, tks, args).value();
+        // }
 
         return 0.0; // cond != 0 ? true_action : false_action;
     }
