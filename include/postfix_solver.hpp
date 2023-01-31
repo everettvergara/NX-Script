@@ -100,6 +100,7 @@ namespace eg
 
             tk_result.get_value() = op_result.value();
             result.push(tk_result.get_token_id());
+
             return true;
         }
 
