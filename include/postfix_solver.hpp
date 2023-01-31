@@ -106,7 +106,8 @@ namespace eg
             if (not op_result)
                 return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_token_name());
 
-            result.push(*op_result);
+            result.push(tk.get_token_id());
+//            result.push(*op_result);
             return true;
         }
 

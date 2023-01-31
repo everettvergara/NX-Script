@@ -31,6 +31,8 @@ namespace eg
         token_type_tree         token_type_tree_;
         token_data              token_data_;
 
+        token_id                result_token_id_;
+
     public:
 
         script_data(const script_list &scr, const size_t max_stack_parm)
@@ -38,6 +40,11 @@ namespace eg
         {
             token_type_tree_.add_branch(std::vector<token_type>{TT_VAR, TT_ASSIGN, TT_ANY});
             token_type_tree_.add_branch(std::vector<token_type>{TT_PARAM, TT_ASSIGN, TT_ANY});
+        }
+
+        auto get_result_token_id() -> token_id &
+        {
+            return result_token_id_;
         }
 
         auto get_script_list() -> script_list &

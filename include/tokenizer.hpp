@@ -29,6 +29,10 @@ namespace eg
             * '
             */
 
+            // Add Stop token
+            // Add global rvalue
+            data_.get_result_token_id() = data_.get_tokens().emplace(token(TT_RESULT, "R")).first->first;
+
             for(size_t lno = 0; lno < data_.get_script_list().size(); ++lno) 
             {
                 auto fn_tk_ids = eval_and_get_fn_param(lno);

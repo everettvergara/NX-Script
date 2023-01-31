@@ -12,7 +12,8 @@ namespace eg
         TT_FN,
         TT_PARAM,
         TT_ASSIGN,
-        
+        TT_RESULT,
+
         TT_OP_ADD,
         TT_OP_SUB,
         TT_OP_MUL,
