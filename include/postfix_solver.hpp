@@ -41,6 +41,7 @@ namespace eg
             for (const auto lno : line_seq)
             {
                 std::cout << lno << ": ";
+                
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
@@ -48,7 +49,8 @@ namespace eg
 
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                     return false;
-                // std::cout << std::endl;
+                
+                std::cout << std::endl;
 
             }
 
@@ -57,9 +59,10 @@ namespace eg
 
     private:
         
-        auto process_stop(std::stack<token_id> &result)
+        auto process_stop(token &tk, std::stack<token_id> &result)
         {
-            result.push(data_.get_stop_token_id());
+            tk.get_value() = 0.0;
+            result.push(tk.get_token_id());
         }
 
         auto process_num(token &tk, std::stack<token_id> &result)
@@ -171,7 +174,7 @@ namespace eg
                     
                 } else if (is_token_type_stop(tt)) {
                     
-                    process_stop(result);
+                    process_stop(tk, result);
                 
                 } else {
 
