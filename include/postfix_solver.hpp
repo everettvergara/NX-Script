@@ -64,37 +64,19 @@ namespace eg
 
         auto process_num(token &tk, std::stack<token_id> &result)
         {
-            // auto &value = tk.get_value();
-            // if (not value) 
-            //     value = svton<FP>(tk.get_token_name());
-            //result.push(*value);
-            
             result.push(tk.get_token_id());
         }
-
-        // auto process_var(token &tk) -> bool
-        // {
-        //     auto &value = tk.get_value();
-        //     if (not value) 
-        //         return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
-        //     return true;
-        // }
 
         auto process_var(token &tk, std::stack<token_id> &result)
         {
-            // auto &value = tk.get_value();
-            // if (not value) 
-            //     return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
-            // result.push(*value);
-
             result.push(tk.get_token_id());
         }
 
-        auto process_op(token &tk_result, token &tk, std::stack<token_id> &result) -> bool
+        auto process_op(tokens &tks, token &tk_result, token &tk, std::stack<token_id> &result) -> bool
         {
             auto op = get_token_op_executor(tk.get_token_type());
             
-            auto op_result = op.value()(result);
+            auto op_result = op.value()(tks, result);
             if (not op_result)
                 return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_token_name());
 
@@ -179,12 +161,12 @@ namespace eg
 
                 } else if (is_token_type_op(tt)) {
 
-                    if (not process_op(tk_result, tk, result))
+                    if (not process_op(tks, tk_result, tk, result))
                         return false;
 
                 } else if (is_token_type_assignment(tt)) {
 
-                    if (not process_op(tk_result, tk, result))
+                    if (not process_op(tks, tk_result, tk, result))
                         return false;
                     
                 } else if (is_token_type_stop(tt)) {
