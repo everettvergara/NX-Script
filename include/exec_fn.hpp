@@ -36,16 +36,12 @@ namespace eg
         if (args.size() != 2) return {};
 
         auto a1 = get_arg_value(0, tks, args);
-        if (not a1) {
-            std::cout << "arg1 error tkid: " << std::get<0>(args.at(0)) << std::endl;
+        if (not a1)
             return {};
-        }
 
         auto a2 = get_arg_value(1, tks, args);
-        if (not a2) {
-            std::cout << "arg2 error tkid: " << std::get<0>(args.at(1)) << std::endl;
+        if (not a2)
             return {};
-        }
 
         return std::tuple(a1.value(), a2.value());
     }
@@ -317,6 +313,19 @@ namespace eg
         return std::max(a, b);
 
         return static_cast<FP>(std::pow(a, b));
+    }
+
+    auto get_token_fn_repeatable(const std::string_view str) -> std::optional<size_t>
+    {
+        static std::unordered_map<std::string_view, size_t> cond_param_position
+        {
+            {"$for",    2},
+        };
+
+        auto f = cond_param_position.find(str); 
+        if(f != cond_param_position.end()) return f->second;
+        
+        return {};        
     }
 
 
