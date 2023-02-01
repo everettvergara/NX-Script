@@ -107,23 +107,10 @@ namespace eg
 
     auto exec_fn_for(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        auto t = get_5arg_values(tks, args); 
-        if (not t) return {};
-        
-        // auto [s, e, cond, inc, fn] = t.value();
-
-        // while (cond == 1.0)
-        // {
-
-        //     // $block should be executed
-        //     // Delta should be execd first
-        //     // Condition should be execd first 
-        //     cond = get_arg_value(2, tks, args).value();
-        // }
-
-        return 0.0; // cond != 0 ? true_action : false_action;
+        auto cond = get_arg_value(2, tks, args);
+        if (not cond) return {};
+        return cond;
     }
-
 
     auto exec_fn_if(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
