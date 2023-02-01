@@ -41,6 +41,7 @@ namespace eg
             for (const auto lno : line_seq)
             {
                 std::cout << lno << ": ";
+                // TODO:  Must check if line is repeatable
                 
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
@@ -94,7 +95,10 @@ namespace eg
 
         auto process_fn(tokens &tks, token &tk_result, token &tk, std::stack<token_id> &result) -> bool
         {
+            // If function is repeatable, take all the line dependencies of the function and rereturn until 
+
             auto &value = tk.get_value();
+
             if (not value)
             {   
                 for (auto [tk_param_id, tk_param_sv] : tk.get_fn_params())
