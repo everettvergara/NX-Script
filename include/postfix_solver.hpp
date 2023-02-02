@@ -31,7 +31,6 @@ namespace eg
 
             sf.push({0, false});
 
-
             do
             {
                 auto lno    = std::get<0>(sf.top());
@@ -72,10 +71,11 @@ namespace eg
 
                     if (top_lno == data_.get_line_no_of_stop())
                         return true;
-                    
 
                     if (top_lno < data_.get_line_no_of_stop())
                         sf.push({top_lno + 1, false});
+
+                    std::cout << std::endl;
                 }
 
             } while(not sf.empty());
