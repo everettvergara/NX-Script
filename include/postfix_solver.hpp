@@ -1,14 +1,14 @@
 #pragma once
 
-// #include <vector>
-// #include <stack>
-// #include <optional>
-// #include <unordered_set>
-// #include <boost/range/combine.hpp>
-// #include "script_data.hpp"
-// #include "error_info.hpp"
-// #include "exec_fn.hpp"
-// #include "exec_op.hpp"
+#include <vector>
+#include <stack>
+#include <optional>
+#include <unordered_set>
+#include <boost/range/combine.hpp>
+#include "script_data.hpp"
+#include "error_info.hpp"
+#include "exec_fn.hpp"
+#include "exec_op.hpp"
 
 namespace eg
 {
@@ -33,7 +33,8 @@ namespace eg
             
             do
             {
-                auto lno = sf.top();
+                auto lno    = std::get<0>(sf.top());
+                auto &ready = std::get<1>(sf.top());
 
                 auto f = data_.get_line_no_dependencies().find(lno);
                 if (f != data_.get_line_no_dependencies().end())
@@ -42,45 +43,34 @@ namespace eg
                     auto rb = ldeps.rbegin();
                     do 
                     {
-                        sf.push(*rb);
+                        sf.push({*rb, false});
                     } while (++rb != ldeps.rend());
                 }
-                // Check if lno has dependencies, if yes push to stackframe
-//    using line_nos                  = std::set<size_t>;
-//    using line_no_dependencies      = std::unordered_map<size_t, line_nos>;
+                ready = true;
+
+                auto top_ready = std::get<1>(sf.top());
+                if (top_ready)
+                {
+                    auto top_lno = std::get<0>(sf.top());
+                    sf.pop();
+
+                    std::cout << top_lno << ": ";
+                    
+                    auto &tks           = data_.get_tokens();
+                    auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(top_lno);
+                    auto line           = data_.get_script_list().at(top_lno);
+                    auto lvalue_tk_id   = data_.get_lvalue_tokens().at(top_lno);
+
+                    if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
+                        return false;
+
+                    std::cout << std::endl;
+                }
 
             } while(not sf.empty());
 
-/*
-            auto line_seq = get_line_seq();
-
-            std::cout << "line seq: " << std::endl;
-            for (const auto lno : line_seq)
-            {
-                std::cout << " " << lno;
-            }
-            std::cout << std::endl;
-
-            for (const auto lno : line_seq)
-            {
-                std::cout << lno << ": ";
-                
-                auto &tks           = data_.get_tokens();
-                auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
-                auto line           = data_.get_script_list().at(lno);
-                auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
-
-                if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
-                    return false;
-                
-                std::cout << std::endl;
-            }
-
-*/
             return true;
         }
-
-/*
 
     private:
         
@@ -245,40 +235,6 @@ namespace eg
             }        
         }
 
-        auto get_line_seq() -> std::vector<size_t>
-        {
-            std::vector<size_t>         seq;
-            std::unordered_set<size_t>  already_in_seq;
-
-            const size_t                s = data_.get_script_list().size();
-            auto                        pending = populate_pending(s);
-            
-            while (not pending.empty())
-            {
-                auto &[l, ready_to_insert] = pending.top();
-                if (already_in_seq.find(l) == already_in_seq.end())
-                {
-                    if (not ready_to_insert)
-                    {
-                        auto f = data_.get_line_no_dependencies().find(l);                    
-                        if (f != data_.get_line_no_dependencies().end())
-                        {
-                            add_line_nos_to_pending(pending, f->second.rbegin(), f->second.rend());
-                            ready_to_insert = true;
-                            continue;
-                        }
-                    }
-
-                    seq.push_back(l);
-                    already_in_seq.emplace(l);
-                }
-
-                pending.pop();
-            }
-
-            return seq;
-        }
-*/        
    };
 
 }
