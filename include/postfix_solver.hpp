@@ -38,7 +38,7 @@ namespace eg
                 auto &ready = std::get<1>(sf.top());
 
                 auto f = data_.get_line_no_dependencies().find(lno);
-                if (f != data_.get_line_no_dependencies().end())
+                if (ready == false and f != data_.get_line_no_dependencies().end())
                 {
                     auto ldeps = f->second;
                     auto rb = ldeps.rbegin();
@@ -49,16 +49,16 @@ namespace eg
                 }
                 ready = true;
 
-                if (lno == 12)
-                {
-                    std::cout << "12 here....." << std::endl;
-                }
-
                 auto top_ready = std::get<1>(sf.top());
                 if (top_ready)
                 {
                     auto top_lno = std::get<0>(sf.top());
                     sf.pop();
+                    if (not sf.empty())
+                    {
+                        auto &prev_top_ready = std::get<1>(sf.top());
+                        prev_top_ready = true;
+                    }
 
                     std::cout << top_lno << ": ";
                     
@@ -70,11 +70,10 @@ namespace eg
                     if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                         return false;
 
-                    std::cout << std::endl;
-
                     if (top_lno == data_.get_line_no_of_stop())
                         return true;
                     
+
                     if (top_lno < data_.get_line_no_of_stop())
                         sf.push({top_lno + 1, false});
                 }
