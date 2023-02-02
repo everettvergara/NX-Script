@@ -49,7 +49,7 @@ namespace eg
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
-                    return false;
+                    return false;w
                 
                 std::cout << std::endl;
 
@@ -95,8 +95,6 @@ namespace eg
 
         auto process_fn(tokens &tks, token &tk_result, token &tk, std::stack<token_id> &result) -> bool
         {
-            // If function is repeatable, take all the line dependencies of the function and rereturn until 
-
             auto &value = tk.get_value();
 
             if (not value)
