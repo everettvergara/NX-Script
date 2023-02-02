@@ -1,14 +1,14 @@
 #pragma once
 
-// #include <vector>
-// #include <stack>
-// #include <optional>
-// #include <unordered_set>
-// #include <boost/range/combine.hpp>
-// #include "script_data.hpp"
-// #include "error_info.hpp"
-// #include "exec_fn.hpp"
-// #include "exec_op.hpp"
+#include <vector>
+#include <stack>
+#include <optional>
+#include <unordered_set>
+#include <boost/range/combine.hpp>
+#include "script_data.hpp"
+#include "error_info.hpp"
+#include "exec_fn.hpp"
+#include "exec_op.hpp"
 
 namespace eg
 {
@@ -20,6 +20,8 @@ namespace eg
 
 
     public:
+        // TODO: Make it static, don't pass data in constructor
+        // Same goes for tokenizer and pf converter
         postfix_solver(script_data &data)
             : data_(data)
         {
@@ -27,31 +29,6 @@ namespace eg
 
         auto solve() -> bool
         {
-            std::stack<std::tuple<size_t, bool>> sf;
-
-            sf.push({0, false});
-            
-            do
-            {
-                auto lno = sf.top();
-
-                auto f = data_.get_line_no_dependencies().find(lno);
-                if (f != data_.get_line_no_dependencies().end())
-                {
-                    auto ldeps = f->second;
-                    auto rb = ldeps.rbegin();
-                    do 
-                    {
-                        sf.push(*rb);
-                    } while (++rb != ldeps.rend());
-                }
-                // Check if lno has dependencies, if yes push to stackframe
-//    using line_nos                  = std::set<size_t>;
-//    using line_no_dependencies      = std::unordered_map<size_t, line_nos>;
-
-            } while(not sf.empty());
-
-/*
             auto line_seq = get_line_seq();
 
             std::cout << "line seq: " << std::endl;
@@ -76,11 +53,8 @@ namespace eg
                 std::cout << std::endl;
             }
 
-*/
             return true;
         }
-
-/*
 
     private:
         
@@ -278,7 +252,6 @@ namespace eg
 
             return seq;
         }
-*/        
    };
 
 }
