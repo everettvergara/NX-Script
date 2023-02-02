@@ -32,6 +32,7 @@ namespace eg
         token_data              token_data_;
 
         token_id                result_token_id_;
+        size_t                  line_no_of_stop_;
 
     public:
 
@@ -40,6 +41,11 @@ namespace eg
         {
             token_type_tree_.add_branch(std::vector<token_type>{TT_VAR, TT_ASSIGN, TT_ANY});
             token_type_tree_.add_branch(std::vector<token_type>{TT_PARAM, TT_ASSIGN, TT_ANY});
+        }
+
+        auto get_line_no_of_stop() -> size_t &
+        {
+            return line_no_of_stop_;
         }
 
         auto get_result_token_id() -> token_id &
