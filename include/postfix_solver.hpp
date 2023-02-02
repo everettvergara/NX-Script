@@ -30,7 +30,8 @@ namespace eg
             std::stack<std::tuple<size_t, bool>> sf;
 
             sf.push({0, false});
-            
+
+
             do
             {
                 auto lno    = std::get<0>(sf.top());
@@ -47,6 +48,11 @@ namespace eg
                     } while (++rb != ldeps.rend());
                 }
                 ready = true;
+
+                if (lno == 12)
+                {
+                    std::cout << "12 here....." << std::endl;
+                }
 
                 auto top_ready = std::get<1>(sf.top());
                 if (top_ready)
@@ -66,7 +72,11 @@ namespace eg
 
                     std::cout << std::endl;
 
-                    // if (top_lno )
+                    if (top_lno == data_.get_line_no_of_stop())
+                        return true;
+                    
+                    if (top_lno < data_.get_line_no_of_stop())
+                        sf.push({top_lno + 1, false});
                 }
 
             } while(not sf.empty());
