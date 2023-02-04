@@ -27,6 +27,8 @@ namespace eg
         ERR_UNEXPECTED_RESULT,
         ERR_FN_INVALID_OUTPUT,
         ERR_OP_INVALID_OUTPUT,
+
+        ERR_INVALID_ROUTE,
         ERR_UNKNOWN,
     };
 
@@ -58,6 +60,7 @@ namespace eg
                 case ERR_UNEXPECTED_RESULT: return "Unexpected result.";
                 case ERR_FN_INVALID_OUTPUT: return "Invalid function output.";
                 case ERR_OP_INVALID_OUTPUT: return "Invalid operator output.";
+                case ERR_INVALID_ROUTE:     return "Invalid route.";
                 default:                    return "Unknown critical error.";
             }
         }

@@ -41,22 +41,22 @@ namespace eg
                                                                 f != data_.get_line_no_dependencies().end())
                                                             {
                                                                 auto ldeps = f->second;
-                                                                sf.push({*ldeps.begin(), EXEC_CONDITIONALS});
+                                                                sf.push({*ldeps.begin(), FOR_CHECKING});
                                                             }
                                                         };
-/*
+
             auto push_ldeps_to_sf_for_repeat            =   [&](const size_t lno) {
                                                             if (auto f = data_.get_line_no_dependencies().find(lno);
                                                                 f != data_.get_line_no_dependencies().end())
                                                             {
                                                                 auto ldeps = f->second;
                                                                 auto rb = ldeps.rbegin();
-                                                                do sf.push({*rb, false, false}); while (++rb != ldeps.rend());
+                                                                do sf.push({*rb, FOR_CHECKING}); while (++rb != ldeps.rend());
                                                                 sf.pop();
                                                             }
                                                         };
 
-*/
+
 
             auto push_ldeps_to_sf_if_any    =   [&](const size_t lno) {
                                                     if (auto f = data_.get_line_no_dependencies().find(lno);
@@ -92,12 +92,32 @@ namespace eg
                     {
                         push_ldeps_to_sf_for_cond_repeat(lno);
                         sf_proc = EXEC_CONDITIONALS;
+                        continue;
                     
                     } else if (sf_proc == EXEC_CONDITIONALS) {
 
-                        // Check if fn value is 0 or != 1
-                    }
+                        auto tk_id = data_.get_repeat_token().find(lno)->second;
+                        if (data_.get_tokens().find(tk_id)->second.get_value() != 0)
+                        {
+                            sf_proc = PUSH_STATEMENTS;
+                            continue;
 
+                        } else {
+                            
+                            sf.pop();
+                            continue;
+                        }
+                    
+                    } else if (sf_proc == PUSH_STATEMENTS) {
+                    
+                        push_ldeps_to_sf_for_repeat(lno);
+                        sf_proc = FOR_CHECKING;
+                        continue;
+
+                    } else {
+
+                        return set_err<bool, false>(ERR_INVALID_ROUTE);
+                    }
                 }
 
                 auto &tks           = data_.get_tokens();
@@ -110,25 +130,7 @@ namespace eg
                 auto r = solve_line(tks, pf_ptk, line, lvalue_tk_id);
                 if (not r) return false;
 
-
                 sf.pop();
-
-//                 if (not is_lno_repeatable(data_.get_line_no_repeats(), lno)) 
-//                     sf.pop();
-                
-//                 else if (r.value() == 0) 
-//                 {
-// //                    std::cout << lno <<  "REPEATABLE: " << r.value() << std::endl;
-//                     sf.pop();
-
-//                 } else {
-                    
-//                    std::cout << lno << "REPEATABLEx: " << r.value() << std::endl;
-//                     ready_to_pop = false;
-//                     continue;
-//                 }
-
-
 
                 if (is_lno_stopable(data_.get_line_no_stops(), lno)) 
                     return true;
