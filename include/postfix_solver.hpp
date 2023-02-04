@@ -32,12 +32,10 @@ namespace eg
 
         auto solve() -> bool
         {
-           enum SF_PROC {FOR_CHECKING, READY_TO_POP, EXEC_CONDITIONALS, PUSH_STATEMENTS};
+            // Non-Repeatable:   For Checking --> Ready to Pop
+            // Repeatable:       For Checking --> Exec Conditionals --> Push Statements --> For Checking
+            enum SF_PROC {FOR_CHECKING, READY_TO_POP, EXEC_CONDITIONALS, PUSH_STATEMENTS};
            
-           // Non-Repeatable:   For Checking --> Ready to Pop
-           // Repeatable:       For Checking --> Exec Conditionals --> Push Statements --> For Checking
-
-
             std::stack<std::tuple<size_t, SF_PROC>> sf;
 
             auto push_ldeps_to_sf_for_cond_repeat   =   [&](const size_t lno) {
@@ -59,8 +57,6 @@ namespace eg
                                                                 sf.pop();
                                                             }
                                                         };
-
-
 
             auto push_ldeps_to_sf_if_any    =   [&](const size_t lno) {
                                                     if (auto f = data_.get_line_no_dependencies().find(lno);
@@ -94,15 +90,15 @@ namespace eg
                 
                     if (sf_proc == FOR_CHECKING)
                     {
-                        std::cout << "lno: " << lno << " - for checking" << std::endl;
                         push_ldeps_to_sf_for_cond_repeat(lno);
                         sf_proc = EXEC_CONDITIONALS;
                         continue;
                     
                     } else if (sf_proc == EXEC_CONDITIONALS) {
 
-                        auto tk_id = data_.get_repeat_token().find(lno)->second;
-                        std::cout << "lno: " << lno << " - exec conditionals" << std::endl;
+                        auto conditional_line = *data_.get_line_no_dependencies().at(lno).begin();
+                        auto tk_id = *data_.get_parsable_tokens_list().at(conditional_line).begin();
+
                         if (data_.get_tokens().find(tk_id)->second.get_value() != 0)
                         {
                             sf_proc = PUSH_STATEMENTS;
@@ -111,12 +107,13 @@ namespace eg
                         } else {
                             
                             sf.pop();
+                            if (lno < data_.get_line_no_of_last_stop())
+                                sf.push({lno + 1, FOR_CHECKING});
                             continue;
                         }
                     
                     } else if (sf_proc == PUSH_STATEMENTS) {
                     
-                        std::cout << "lno: " << lno << " - push statements" << std::endl;
                         push_ldeps_to_sf_for_repeat(lno);
                         sf_proc = FOR_CHECKING;
                         continue;
@@ -132,7 +129,7 @@ namespace eg
                 auto line           = data_.get_script_list().at(lno);
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
-                std::cout << lno << ": " << line;
+                // std::cout << lno << ": ";
 
                 auto r = solve_line(tks, pf_ptk, line, lvalue_tk_id);
                 if (not r) return false;
@@ -145,8 +142,7 @@ namespace eg
                 else if (lno < data_.get_line_no_of_last_stop())
                     sf.push({lno + 1, FOR_CHECKING});
 
-                std::cout << std::endl;
-                std::this_thread::sleep_for(1000ms);
+                // std::cout << std::endl;
 
             } while(true);
 

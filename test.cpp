@@ -58,7 +58,7 @@ auto main() -> int
         "e = 5;"
         "$for($lt(s, e),"
                 "$("
-                    "$prt(s),"
+                    "$prt(s, s * 2),"
                     "s = s + 1"
                 ")" 
         ");"
@@ -73,5 +73,3 @@ auto main() -> int
 
     return 0;
 }
-
-

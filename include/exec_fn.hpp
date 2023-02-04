@@ -190,6 +190,7 @@ namespace eg
         if (not t) return {};
         
         auto [a, b] = t.value();
+
         return a < b ? 1 : 0;
     }
 
@@ -284,8 +285,8 @@ namespace eg
             auto &tk = f->second;
             if (not tk.get_value()) return {};
 
-            // std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
-            std::cout << ": " << *tk.get_value() << ", ";
+            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
+//            std::cout << ": " << *tk.get_value() << ", ";
         }
 
         // std::cout << std::endl;
