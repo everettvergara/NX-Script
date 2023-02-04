@@ -27,48 +27,34 @@ namespace eg
 
         auto solve2() -> bool
         {
+            std::stack<std::tuple<size_t, bool>> sf;
 
-            // Queued process
-            std::optional<size_t> qp {0};
-            
-            // Stack frame
-            std::stack<size_t> sf;
-
-
-            auto move_qp_tp_sf =    [&]() -> bool {
-                                        if (qp)
-                                        {
-                                            sf.push(qp.value());
-                                            qp = std::nullopt;
-                                            return true;
-                                        }
-                                        return false;
-                                    };
-
-            auto put_ldep_to_sf =   [&](const line_nos &ldeps) -> void {
-                                        auto rb = ldeps.rbegin();
-                                        do sf.push(*rb); while (++rb != ldeps.rend());
-                                    };
+            sf.push({0, false});
 
             do
             {
-                if (move_qp_tp_sf())
+                auto lno            = std::get<0>(sf.top());
+                auto &ready_to_pop  = std::get<1>(sf.top());
+
+                if (not ready_to_pop)
                 {
-                    if (auto f = data_.get_line_no_dependencies().find(sf.top());
+                    
+                    if (auto f = data_.get_line_no_dependencies().find(lno);
                         f != data_.get_line_no_dependencies().end())
                     {
-                        put_ldep_to_sf(f->second);
-                        continue;   
+                        auto ldeps = f->second;
+                        auto rb = ldeps.rbegin();
+                        do sf.push({*rb, false}); while (++rb != ldeps.rend());
+                        continue;
                     }
-                }
-                
-                auto lno = sf.top();
 
-                // Anything that will be executed below does not have a line dependency
-                // if lno needs repeat then put it to pq or dont pop it
+                    ready_to_pop = true;
+                }
+
                 sf.pop();
 
                 std::cout << lno << ": ";
+                
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
@@ -77,15 +63,15 @@ namespace eg
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                     return false;
 
-                if (lno == data_.get_line_no_of_stop())
-                    return true;
+                // if (lno == data_.get_line_no_of_stop())
+                //     return true;
 
                 if (lno < data_.get_line_no_of_stop())
-                    sf.push(lno + 1);
+                    sf.push({lno + 1, false});
 
                 std::cout << std::endl;
-                
-            } while (not sf.empty());
+
+            } while(not sf.empty());
 
             return true;
         }

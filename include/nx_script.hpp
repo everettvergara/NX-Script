@@ -35,7 +35,7 @@ namespace eg
             data_.debug(ST_POSTFIX);
 
             auto s = postfix_solver(data_);
-            if (not s.solve()) 
+            if (not s.solve2()) 
                 return set_err<bool, false>(s.get_err());
 
             return true;

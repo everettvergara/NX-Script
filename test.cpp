@@ -64,12 +64,15 @@ auto main() -> int
     //     "$prt(x);"
     //     "$prt(y);"
     //     "$prt(z);"
+    
     // };
 
     nx_script nx(str);
 
     if (not nx.eval()) 
         nx.get_err().print();
+
+    std::cout << "exited properly!" << std::endl;
 
     return 0;
 }
