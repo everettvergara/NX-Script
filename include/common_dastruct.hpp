@@ -24,7 +24,9 @@ namespace eg
 
         TT_END,
         TT_STOP,
-        
+
+        TT_COMMENT,
+
         TT_ANY,
 
         TT_INVALID,

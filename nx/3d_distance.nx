@@ -1,9 +1,23 @@
 
- x = (5 * 2);
- x = x + 1;
- y = x * 20;
- w = $pow(x , 2);
- z = $sqrt(x * x + y * y + w);
+' 3D Distance Computation
+'
+' The distance in a 3D plane
+' is the Square Root of:
+'
+'   l ^ 2 + w ^ 2 + h ^2
+'
 
- $prt(z);
- 
+l = 100;
+w = 200;
+h = 300;
+
+$prt(l * l);
+$prt(w * w);
+$prt(h * h);
+
+total = l * l + w * w + h * h;
+$prt(total);
+
+distance = $sqrt(l * l + w * w + h * h);
+
+$prt(distance);

@@ -37,6 +37,8 @@ namespace eg
         else if(str[i] == '!')          return TT_STOP; 
         else if(str[i] == '\0')         return TT_STOP;
 
+        else if(str[i] == '\'')         return TT_COMMENT;
+
         return TT_INVALID;
     }
 
@@ -73,6 +75,7 @@ namespace eg
             case TT_PARAM:      return "&";
             case TT_END:        return ";";
             case TT_STOP:       return "!";
+            case TT_COMMENT:    return "'";
             default:            return "?";
         }
     }
@@ -153,6 +156,17 @@ namespace eg
         auto e = s + 1;
         ++i;
         return std::string_view(s, e);
+    }
+
+    auto parse_sv_comment(const std::string_view sv, size_t &i) -> std::optional<std::string_view>
+    {
+        auto s = sv.begin() + i;
+        auto e = std::find_if(s, sv.end(),  [](char ch) -> bool {
+                                                    return ch == '\n';
+                                                });
+
+        i += e - s;
+        return "";
     }
 
     auto parse_sv_space(const std::string_view sv, size_t &i) -> std::optional<std::string_view>
@@ -266,6 +280,7 @@ namespace eg
             {TT_PAR_CLOSE,  std::bind(&parse_sv_single, _1, _2)},
             {TT_END,        std::bind(&parse_sv_single, _1, _2)},
             {TT_STOP,       std::bind(&parse_sv_single, _1, _2)}, 
+            {TT_COMMENT,    std::bind(&parse_sv_comment, _1, _2)}, 
         };
         
         if (auto f = tt_fn_parser.find(tt); f != tt_fn_parser.end()) 
@@ -282,6 +297,7 @@ namespace eg
             TT_INVALID,
             TT_ANY,
             TT_END,
+            TT_COMMENT,
         };
 
         if(ignored_token_types.find(tt) != ignored_token_types.end())
