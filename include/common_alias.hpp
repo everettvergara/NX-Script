@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cstdint>
+#include <unordered_set>
 #include <unordered_map>
 #include <set>
 #include <vector>
@@ -33,8 +34,9 @@ namespace eg
 
     using line_nos                  = std::set<size_t>;
     using line_no_dependencies      = std::unordered_map<size_t, line_nos>;
-    using line_no_stops             = std::set<size_t>;
-    using line_no_repeats           = std::set<size_t>;
+    using line_no_stops             = std::unordered_set<size_t>;
+    using line_no_repeats           = std::unordered_set<size_t>;
+    using repeat_token              = std::unordered_map<size_t, token_id>;
 
     class token_type_tree;
     using nodes                     = std::unordered_map<token_type, token_type_tree>;

@@ -28,7 +28,35 @@ namespace eg
 
         auto solve() -> bool
         {
-            std::stack<std::tuple<size_t, bool>> sf;
+           enum SF_PROC {FOR_CHECKING, READY_TO_POP, EXEC_CONDITIONALS, PUSH_STATEMENTS};
+           
+           // Non-Repeatable:   For Checking --> Ready to Pop
+           // Repeatable:       For Checking --> Exec Conditionals --> Push Statements --> For Checking
+
+
+            std::stack<std::tuple<size_t, SF_PROC>> sf;
+
+            auto push_ldeps_to_sf_for_cond_repeat   =   [&](const size_t lno) {
+                                                            if (auto f = data_.get_line_no_dependencies().find(lno);
+                                                                f != data_.get_line_no_dependencies().end())
+                                                            {
+                                                                auto ldeps = f->second;
+                                                                sf.push({*ldeps.begin(), EXEC_CONDITIONALS});
+                                                            }
+                                                        };
+/*
+            auto push_ldeps_to_sf_for_repeat            =   [&](const size_t lno) {
+                                                            if (auto f = data_.get_line_no_dependencies().find(lno);
+                                                                f != data_.get_line_no_dependencies().end())
+                                                            {
+                                                                auto ldeps = f->second;
+                                                                auto rb = ldeps.rbegin();
+                                                                do sf.push({*rb, false, false}); while (++rb != ldeps.rend());
+                                                                sf.pop();
+                                                            }
+                                                        };
+
+*/
 
             auto push_ldeps_to_sf_if_any    =   [&](const size_t lno) {
                                                     if (auto f = data_.get_line_no_dependencies().find(lno);
@@ -36,45 +64,70 @@ namespace eg
                                                     {
                                                         auto ldeps = f->second;
                                                         auto rb = ldeps.rbegin();
-                                                        do sf.push({*rb, false}); while (++rb != ldeps.rend());
+                                                        do sf.push({*rb, FOR_CHECKING}); while (++rb != ldeps.rend());
                                                     }
                                                 };
 
-            sf.push({0, false});
+            sf.push({0, FOR_CHECKING});
 
             do
             {
-                const auto lno      = std::get<0>(sf.top());
-                auto &ready_to_pop  = std::get<1>(sf.top());
+                const auto lno  = std::get<0>(sf.top());
+                auto &sf_proc   = std::get<1>(sf.top());
 
-                if (not ready_to_pop)
+                auto is_lrepeatable = is_lno_repeatable(data_.get_line_no_repeats(), lno);
+
+                if (not is_lrepeatable)
                 {
-                    push_ldeps_to_sf_if_any(lno);
-                    ready_to_pop = true;
-                    continue;
+                    if (sf_proc == FOR_CHECKING)
+                    {
+                        push_ldeps_to_sf_if_any(lno);
+                        sf_proc = READY_TO_POP;
+                        continue;
+                    }
+                
+                } else {
+                
+                    if (sf_proc == FOR_CHECKING)
+                    {
+                        push_ldeps_to_sf_for_cond_repeat(lno);
+                        sf_proc = EXEC_CONDITIONALS;
+                    
+                    } else if (sf_proc == EXEC_CONDITIONALS) {
+
+                        // Check if fn value is 0 or != 1
+                    }
+
                 }
 
-                std::cout << lno << ": ";
                 
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
+                std::cout << lno << ": " << line;
 
                 auto r = solve_line(tks, pf_ptk, line, lvalue_tk_id);
                 if (not r) return false;
 
-                if (not is_lno_repeatable(data_.get_line_no_stops(), lno)) 
-                    sf.pop();
+
+                sf.pop();
+
+//                 if (not is_lno_repeatable(data_.get_line_no_repeats(), lno)) 
+//                     sf.pop();
                 
-                else if (r.value() == 0) 
-                    sf.pop();
-                
-                else 
-                {
-                    ready_to_pop = false;
-                }
+//                 else if (r.value() == 0) 
+//                 {
+// //                    std::cout << lno <<  "REPEATABLE: " << r.value() << std::endl;
+//                     sf.pop();
+
+//                 } else {
+                    
+//                    std::cout << lno << "REPEATABLEx: " << r.value() << std::endl;
+//                     ready_to_pop = false;
+//                     continue;
+//                 }
 
 
 
@@ -82,7 +135,7 @@ namespace eg
                     return true;
 
                 else if (lno < data_.get_line_no_of_last_stop())
-                    sf.push({lno + 1, false});
+                    sf.push({lno + 1, FOR_CHECKING});
 
                 std::cout << std::endl;
 

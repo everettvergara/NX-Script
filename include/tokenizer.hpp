@@ -126,6 +126,7 @@ namespace eg
 
                 if (get_token_fn_stoppable(tk.get_fn_name().value()))
                     data_.get_line_no_stops().emplace(lno);
+                    
             }
 
             move_line_dependencies(data_.get_line_no_dependencies(), lno, std::move(ldep));

@@ -107,9 +107,10 @@ namespace eg
 
     auto exec_fn_for(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        auto cond = get_arg_value(2, tks, args);
+        auto cond = get_arg_value(0, tks, args);
         if (not cond) return {};
-        return cond;
+
+        return cond.value();
     }
 
     auto exec_fn_if(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
@@ -264,7 +265,7 @@ namespace eg
             auto &tk = f->second;
             if (not tk.get_value()) return {};
 
-            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
+//            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
         }
 
         std::cout << std::endl;
@@ -283,10 +284,11 @@ namespace eg
             auto &tk = f->second;
             if (not tk.get_value()) return {};
 
-            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
+            // std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
+            std::cout << ": " << *tk.get_value() << ", ";
         }
 
-        std::cout << std::endl;
+        // std::cout << std::endl;
 
         return 0;
     }
@@ -379,11 +381,12 @@ namespace eg
 
     auto get_token_fn_signature(std::string_view str) -> std::optional<int32_t>
     {
+
         static std::unordered_map<std::string_view, int32_t> fn_signature
         {
             {"$",      std::numeric_limits<int32_t>::min()},
             {"$if",    3},
-            {"$for",   5},
+            {"$for",   2},  // $for(cond, $)
 
             {"$eq",    2},
             {"$neq",   2},

@@ -35,6 +35,7 @@ namespace eg
         line_no_stops           line_no_stops_;
         line_no_repeats         line_no_repeats_;
         size_t                  line_no_of_last_stop_;
+        repeat_token            repeat_token_;
 
     public:
 
@@ -43,6 +44,11 @@ namespace eg
         {
             token_type_tree_.add_branch(std::vector<token_type>{TT_VAR, TT_ASSIGN, TT_ANY});
             token_type_tree_.add_branch(std::vector<token_type>{TT_PARAM, TT_ASSIGN, TT_ANY});
+        }
+
+        auto get_repeat_token() -> repeat_token & 
+        {
+            return repeat_token_;
         }
 
         auto get_line_no_of_last_stop() -> size_t & 
