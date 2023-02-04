@@ -5,90 +5,30 @@
 #include "nx_script.hpp"
 
 using eg::nx_script;
+using eg::load_nx_script_from_file;
 
 auto main() -> int
 {
 
-    // TODO: NEeed to add double assignment a = x = 1
-    // std::string str
-    // {   
-    //     "var1 = var0 = 1000;"
-    //     "$prt(var0);"
-    //     "var2 = 2000;"
-    //     "var3 = 3000;"
-    //     "$prt($min(500, $max(var1, $min(var2, var3))));"
-    //     "fin = $if($eq(var1, var2), 100, 500);"
-    //     "$prt(var1, var2, var3, fin);"
-    //     "$prt(var1, var2);"
-    // };
+    std::string file = "D:/Everett/Codes/Projects/Personal/NX-Solver/nx/3d_distance.nx";
+//    std::string file = "D:/Everett/Codes/Projects/Personal/NX-Solver/nx/double_for_loop.nx";
 
-    // std::string str
-    // {   
-    //     "$("
-    //         "var1 = 1000,"
-    //         "var2 = 2000,"
-    //         "var3 = 3000,"
-    //         "$prt($min(500, $max(var1, $min(var2, var3)))),"
-    //         "fin = $if($eq(var1, var2), 100, 500),"
-    //         "$prt(var1, var2, var3, fin),"
-    //         "$prt(var1, var2),"
-    //     ");"
-    // };
+    auto str_code = load_nx_script_from_file(file);
 
+    if (str_code) {
 
-    // std::string str
-    // {   
-    //     "$("
-    //         "s = 1000,"
-    //         "s = s + 1,"
-    //         "$prt(s + 1)"
-    //     ");"
-    // };
+        nx_script nx(str_code.value());
 
-        // "x = (5 * 2);"
-        // "x = x + 1;"
-        // "y = x * 20;"
-        // "w = $pow(x , 2);"
-        // "z = $sqrt(x * x + y * y + w);"
-        // "$prt(z);"
+        if (not nx.eval()) 
+            nx.get_err().print();
 
-    // std::string str
-    // {   
-    //     "s = 0;"
-    //     "e = 5;"
-    //     "$for($lt(s, e),"
-    //             "$("
-    //                 "$prt(s, s * 2),"
-    //                 "s = s + 1"
-    //             ")" 
-    //     ");"
-    // };
+        std::cout << "Exited properly!" << std::endl;
 
-    std::string str
-    {   
-        "s = 1;"
-        "e = 4;"
-        "$for($lt(s, e),"
-                "$("
-                    "a = 1,"
-                    "b = 4,"
-                    "$for($lt(a, b),"
-                        "$("
-                            "$prt(s * a),"
-                            "a = a + 1"
-                        ")"
-                    "),"
-                    "s = s + 1"
-                ")" 
-        ");"
-    };
+    } else {
 
-    nx_script nx(str);
-
-    if (not nx.eval()) 
-        nx.get_err().print();
-
-    std::cout << "exited properly!" << std::endl;
+        std::cout << "Could not load the specified file: " << file << std::endl;
+        return -1;
+    }
 
     return 0;
 }
