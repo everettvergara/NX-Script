@@ -45,7 +45,6 @@ auto main() -> int
     //     ");"
     // };
 
-
         // "x = (5 * 2);"
         // "x = x + 1;"
         // "y = x * 20;"
@@ -64,7 +63,7 @@ auto main() -> int
     //     "$prt(x);"
     //     "$prt(y);"
     //     "$prt(z);"
-    
+
     // };
 
     nx_script nx(str);

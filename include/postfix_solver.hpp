@@ -54,8 +54,6 @@ namespace eg
                     continue;
                 }
 
-                sf.pop();
-
                 std::cout << lno << ": ";
                 
                 auto &tks           = data_.get_tokens();
@@ -67,11 +65,15 @@ namespace eg
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                     return false;
 
+                // If repeatable line, check the last condition if needed to pop or not
+                sf.pop();
+
+
                 if (is_lno_stopable(data_.get_line_no_stops(), lno)) 
                     return true;
 
-                // else if (lno < data_.get_line_no_of_stop())
-                //     sf.push({lno + 1, false});
+                else if (lno < data_.get_line_no_of_last_stop())
+                    sf.push({lno + 1, false});
 
                 std::cout << std::endl;
 
