@@ -61,6 +61,7 @@ namespace eg
             } while (e < str.end());
 
             script.emplace_back(std::string_view(empty_str)) ;
+            data_.get_line_no_of_last_stop() = script.size() - 1;
             
             return script;
         }

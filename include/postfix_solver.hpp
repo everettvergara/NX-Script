@@ -9,6 +9,7 @@
 #include "error_info.hpp"
 #include "exec_fn.hpp"
 #include "exec_op.hpp"
+#include "line_helper.hpp"
 
 namespace eg
 {
@@ -62,19 +63,19 @@ namespace eg
                 auto line           = data_.get_script_list().at(lno);
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
+
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                     return false;
 
+                if (is_lno_stopable(data_.get_line_no_stops(), lno)) 
+                    return true;
 
-                // last solve_line requires repeat then reinsert into sf 
-
-                // else if 
-                //if ()
-                // if (lno < data_.get_line_no_of_stop())
+                // else if (lno < data_.get_line_no_of_stop())
                 //     sf.push({lno + 1, false});
 
                 std::cout << std::endl;
-            } while(not sf.empty());
+
+            } while(true);
 
             return true;
         }
