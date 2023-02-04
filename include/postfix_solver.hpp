@@ -10,9 +10,13 @@
 #include "exec_fn.hpp"
 #include "exec_op.hpp"
 #include "line_helper.hpp"
+#include <thread>
+#include <chrono>
 
 namespace eg
 {
+
+    using namespace std::chrono_literals;
     class postfix_solver : public error_info 
     {
     private: 
@@ -90,6 +94,7 @@ namespace eg
                 
                     if (sf_proc == FOR_CHECKING)
                     {
+                        std::cout << "lno: " << lno << " - for checking" << std::endl;
                         push_ldeps_to_sf_for_cond_repeat(lno);
                         sf_proc = EXEC_CONDITIONALS;
                         continue;
@@ -97,6 +102,7 @@ namespace eg
                     } else if (sf_proc == EXEC_CONDITIONALS) {
 
                         auto tk_id = data_.get_repeat_token().find(lno)->second;
+                        std::cout << "lno: " << lno << " - exec conditionals" << std::endl;
                         if (data_.get_tokens().find(tk_id)->second.get_value() != 0)
                         {
                             sf_proc = PUSH_STATEMENTS;
@@ -110,6 +116,7 @@ namespace eg
                     
                     } else if (sf_proc == PUSH_STATEMENTS) {
                     
+                        std::cout << "lno: " << lno << " - push statements" << std::endl;
                         push_ldeps_to_sf_for_repeat(lno);
                         sf_proc = FOR_CHECKING;
                         continue;
@@ -139,6 +146,7 @@ namespace eg
                     sf.push({lno + 1, FOR_CHECKING});
 
                 std::cout << std::endl;
+                std::this_thread::sleep_for(1000ms);
 
             } while(true);
 
@@ -184,47 +192,44 @@ namespace eg
         {
             auto &value = tk.get_value();
 
-            if (not value)
-            {   
-                for (auto [tk_param_id, tk_param_sv] : tk.get_fn_params())
+            for (auto [tk_param_id, tk_param_sv] : tk.get_fn_params())
+            {
+                auto &tk_param = tks.find(tk_param_id)->second;
+                const auto &tt_tk_param = tk_param.get_token_type();
+
+                if (is_token_type_num(tt_tk_param)) 
                 {
-                    auto &tk_param = tks.find(tk_param_id)->second;
-                    const auto &tt_tk_param = tk_param.get_token_type();
+                    auto &value = tk_param.get_value();
+                    if (not value) 
+                        value = svton<FP>(tk_param.get_token_name());
 
-                    if (is_token_type_num(tt_tk_param)) 
-                    {
-                        auto &value = tk_param.get_value();
-                        if (not value) 
-                            value = svton<FP>(tk_param.get_token_name());
+                } else if (is_token_type_var(tt_tk_param) or is_token_type_fn(tt_tk_param)) {
 
-                    } else if (is_token_type_var(tt_tk_param) or is_token_type_fn(tt_tk_param)) {
+                    auto value = tk_param.get_value();
+                    if (not value) 
+                        return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
+                
+                } else if (is_token_type_tt_param(tt_tk_param)) {
 
-                        auto value = tk_param.get_value();
-                        if (not value) 
-                            return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
-                    
-                    } else if (is_token_type_tt_param(tt_tk_param)) {
+                    auto value = tk_param.get_value();
+                    if (not value) 
+                        return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk.get_token_name());
+                
+                } else {
 
-                        auto value = tk_param.get_value();
-                        if (not value) 
-                            return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk.get_token_name());
-                    
-                    } else {
-
-                        return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
-                    }
+                    return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
                 }
+            }
 
-                auto fn = get_token_fn_executor(*tk.get_fn_name());
-                if (not fn)
-                    return set_err<bool, false>(ERR_FN_NOT_FOUND, tk.get_fn_name().value());
-                
-                auto fn_result = fn.value()(tks, tk.get_fn_params());
-                if (not fn_result)
-                    return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_fn_name().value());
-                
-                value = *fn_result;
-            } 
+            auto fn = get_token_fn_executor(*tk.get_fn_name());
+            if (not fn)
+                return set_err<bool, false>(ERR_FN_NOT_FOUND, tk.get_fn_name().value());
+            
+            auto fn_result = fn.value()(tks, tk.get_fn_params());
+            if (not fn_result)
+                return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_fn_name().value());
+            
+            value = *fn_result;
 
             tk_result.get_value() = *value;
             result.push(tk_result.get_token_id());
