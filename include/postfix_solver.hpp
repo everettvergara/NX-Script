@@ -25,28 +25,30 @@ namespace eg
         {
         }
 
-        auto solve2() -> bool
+        auto solve() -> bool
         {
             std::stack<std::tuple<size_t, bool>> sf;
+
+            auto push_ldeps_to_sf_if_any    =   [&](const size_t lno) {
+                                                    if (auto f = data_.get_line_no_dependencies().find(lno);
+                                                        f != data_.get_line_no_dependencies().end())
+                                                    {
+                                                        auto ldeps = f->second;
+                                                        auto rb = ldeps.rbegin();
+                                                        do sf.push({*rb, false}); while (++rb != ldeps.rend());
+                                                    }
+                                                };
 
             sf.push({0, false});
 
             do
             {
-                auto lno            = std::get<0>(sf.top());
+                const auto lno      = std::get<0>(sf.top());
                 auto &ready_to_pop  = std::get<1>(sf.top());
 
                 if (not ready_to_pop)
                 {
-                    
-                    if (auto f = data_.get_line_no_dependencies().find(lno);
-                        f != data_.get_line_no_dependencies().end())
-                    {
-                        auto ldeps = f->second;
-                        auto rb = ldeps.rbegin();
-                        do sf.push({*rb, false}); while (++rb != ldeps.rend());
-                    }
-
+                    push_ldeps_to_sf_if_any(lno);
                     ready_to_pop = true;
                     continue;
                 }
@@ -63,72 +65,10 @@ namespace eg
                 if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
                     return false;
 
-                // if (lno == data_.get_line_no_of_stop())
-                //     return true;
-
                 if (lno < data_.get_line_no_of_stop())
                     sf.push({lno + 1, false});
 
                 std::cout << std::endl;
-
-            } while(not sf.empty());
-
-            return true;
-        }
-
-        auto solve() -> bool
-        {
-            std::stack<std::tuple<size_t, bool>> sf;
-
-            sf.push({0, false});
-
-            do
-            {
-                auto lno    = std::get<0>(sf.top());
-                auto &ready = std::get<1>(sf.top());
-
-                auto f = data_.get_line_no_dependencies().find(lno);
-                if (ready == false and f != data_.get_line_no_dependencies().end())
-                {
-                    auto ldeps = f->second;
-                    auto rb = ldeps.rbegin();
-                    do 
-                    {
-                        sf.push({*rb, false});
-                    } while (++rb != ldeps.rend());
-                }
-                ready = true;
-
-                auto top_ready = std::get<1>(sf.top());
-                if (top_ready)
-                {
-                    auto top_lno = std::get<0>(sf.top());
-                    sf.pop();
-                    if (not sf.empty())
-                    {
-                        auto &prev_top_ready = std::get<1>(sf.top());
-                        prev_top_ready = true;
-                    }
-
-                    std::cout << top_lno << ": ";
-                    
-                    auto &tks           = data_.get_tokens();
-                    auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(top_lno);
-                    auto line           = data_.get_script_list().at(top_lno);
-                    auto lvalue_tk_id   = data_.get_lvalue_tokens().at(top_lno);
-
-                    if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
-                        return false;
-
-                    if (top_lno == data_.get_line_no_of_stop())
-                        return true;
-
-                    if (top_lno < data_.get_line_no_of_stop())
-                        sf.push({top_lno + 1, false});
-
-                    std::cout << std::endl;
-                }
-
             } while(not sf.empty());
 
             return true;
