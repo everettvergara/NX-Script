@@ -129,7 +129,7 @@ namespace eg
                 auto line           = data_.get_script_list().at(lno);
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
-                // std::cout << lno << ": ";
+                std::cout << lno << ": ";
 
                 auto r = solve_line(tks, pf_ptk, line, lvalue_tk_id);
                 if (not r) return false;
@@ -142,7 +142,7 @@ namespace eg
                 else if (lno < data_.get_line_no_of_last_stop())
                     sf.push({lno + 1, FOR_CHECKING});
 
-                // std::cout << std::endl;
+                std::cout << std::endl;
 
             } while(true);
 
@@ -195,21 +195,24 @@ namespace eg
 
                 if (is_token_type_num(tt_tk_param)) 
                 {
-                    auto &value = tk_param.get_value();
-                    if (not value) 
-                        value = svton<FP>(tk_param.get_token_name());
+                    auto &v = tk_param.get_value();
+                    if (not v) 
+                        v = svton<FP>(tk_param.get_token_name());
 
                 } else if (is_token_type_var(tt_tk_param) or is_token_type_fn(tt_tk_param)) {
 
-                    auto value = tk_param.get_value();
-                    if (not value) 
-                        return set_err<bool, false>(ERR_VAR_UNINIT, tk.get_token_name());
+                    auto v = tk_param.get_value();
+                    if (not v) 
+                        return set_err<bool, false>(ERR_VAR_UNINIT, tk_param.get_token_name());
                 
                 } else if (is_token_type_tt_param(tt_tk_param)) {
 
-                    auto value = tk_param.get_value();
-                    if (not value) 
-                        return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk.get_token_name());
+                    auto v = tk_param.get_value();
+                    if (not v) 
+                    {
+                        std::cout << "uninit: " << tk_param.get_token_id() << std::endl;
+                        return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk_param.get_token_name());
+                    }
                 
                 } else {
 

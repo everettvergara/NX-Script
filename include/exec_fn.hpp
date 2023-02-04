@@ -108,7 +108,8 @@ namespace eg
     auto exec_fn_for(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto cond = get_arg_value(0, tks, args);
-        if (not cond) return {};
+        if (not cond) 
+            return {};
 
         return cond.value();
     }
@@ -265,7 +266,6 @@ namespace eg
 
             auto &tk = f->second;
             if (not tk.get_value()) return {};
-
 //            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
         }
 
