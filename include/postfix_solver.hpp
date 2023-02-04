@@ -35,39 +35,59 @@ namespace eg
             std::stack<size_t> sf;
 
 
-            auto move_qp_tp_sf =    [&]() -> void {
+            auto move_qp_tp_sf =    [&]() -> bool {
                                         if (qp)
                                         {
                                             sf.push(qp.value());
                                             qp = std::nullopt;
+                                            return true;
                                         }
+                                        return false;
+                                    };
+
+            auto put_ldep_to_sf =   [&](const line_nos &ldeps) -> void {
+                                        auto rb = ldeps.rbegin();
+                                        do sf.push(*rb); while (++rb != ldeps.rend());
                                     };
 
             do
             {
-                move_qp_tp_sf();
-                auto lno = sf.top();
-                
-                // If top of the stack has dependencies then, execute them first
-                if (auto f = data_.get_line_no_dependencies().find(lno);
-                    f != data_.get_line_no_dependencies().end())
+                if (move_qp_tp_sf())
                 {
-                    auto ldeps = f->second;
-                    auto rb = ldeps.rbegin();
-                    do sf.push(*rb); while (++rb != ldeps.rend());
-                    continue;   
+                    if (auto f = data_.get_line_no_dependencies().find(sf.top());
+                        f != data_.get_line_no_dependencies().end())
+                    {
+                        put_ldep_to_sf(f->second);
+                        continue;   
+                    }
                 }
+                
+                auto lno = sf.top();
 
+                // Anything that will be executed below does not have a line dependency
+                // if lno needs repeat then put it to pq or dont pop it
                 sf.pop();
 
-                // if lno needs repeat then put it to pq
+                std::cout << lno << ": ";
+                auto &tks           = data_.get_tokens();
+                auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
+                auto line           = data_.get_script_list().at(lno);
+                auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
+                if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
+                    return false;
 
+                if (lno == data_.get_line_no_of_stop())
+                    return true;
+
+                if (lno < data_.get_line_no_of_stop())
+                    sf.push(lno + 1);
+
+                std::cout << std::endl;
+                
             } while (not sf.empty());
-            
 
             return true;
-
         }
 
         auto solve() -> bool
