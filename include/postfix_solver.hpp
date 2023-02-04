@@ -27,49 +27,53 @@ namespace eg
 
         auto solve() -> bool
         {
-            std::stack<std::tuple<size_t, bool>> sf;
+            // std::stack<std::tuple<size_t, bool>> sf;
 
-            auto push_ldeps_to_sf_if_any    =   [&](const size_t lno) {
-                                                    if (auto f = data_.get_line_no_dependencies().find(lno);
-                                                        f != data_.get_line_no_dependencies().end())
-                                                    {
-                                                        auto ldeps = f->second;
-                                                        auto rb = ldeps.rbegin();
-                                                        do sf.push({*rb, false}); while (++rb != ldeps.rend());
-                                                    }
-                                                };
+            // auto push_ldeps_to_sf_if_any    =   [&](const size_t lno) {
+            //                                         if (auto f = data_.get_line_no_dependencies().find(lno);
+            //                                             f != data_.get_line_no_dependencies().end())
+            //                                         {
+            //                                             auto ldeps = f->second;
+            //                                             auto rb = ldeps.rbegin();
+            //                                             do sf.push({*rb, false}); while (++rb != ldeps.rend());
+            //                                         }
+            //                                     };
 
-            sf.push({0, false});
+            // sf.push({0, false});
 
-            do
-            {
-                const auto lno      = std::get<0>(sf.top());
-                auto &ready_to_pop  = std::get<1>(sf.top());
+            // do
+            // {
+            //     const auto lno      = std::get<0>(sf.top());
+            //     auto &ready_to_pop  = std::get<1>(sf.top());
 
-                if (not ready_to_pop)
-                {
-                    push_ldeps_to_sf_if_any(lno);
-                    ready_to_pop = true;
-                    continue;
-                }
+            //     if (not ready_to_pop)
+            //     {
+            //         push_ldeps_to_sf_if_any(lno);
+            //         ready_to_pop = true;
+            //         continue;
+            //     }
 
-                sf.pop();
+            //     sf.pop();
 
-                std::cout << lno << ": ";
+            //     std::cout << lno << ": ";
                 
-                auto &tks           = data_.get_tokens();
-                auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
-                auto line           = data_.get_script_list().at(lno);
-                auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
+            //     auto &tks           = data_.get_tokens();
+            //     auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
+            //     auto line           = data_.get_script_list().at(lno);
+            //     auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
-                if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
-                    return false;
+            //     if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
+            //         return false;
 
-                if (lno < data_.get_line_no_of_stop())
-                    sf.push({lno + 1, false});
 
-                std::cout << std::endl;
-            } while(not sf.empty());
+            //     // last solve_line requires repeat then reinsert into sf 
+
+            //     // else if 
+            //     if (lno < data_.get_line_no_of_stop())
+            //         sf.push({lno + 1, false});
+
+            //     std::cout << std::endl;
+            // } while(not sf.empty());
 
             return true;
         }

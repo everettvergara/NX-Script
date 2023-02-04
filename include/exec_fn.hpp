@@ -302,17 +302,30 @@ namespace eg
         return static_cast<FP>(std::pow(a, b));
     }
 
-    auto get_token_fn_repeatable(const std::string_view str) -> std::optional<size_t>
+    auto get_token_fn_repeatable(const std::string_view str) -> bool
     {
-        static std::unordered_map<std::string_view, size_t> cond_param_position
+        static std::set<std::string_view> repeatable
         {
-            {"$for",    2},
+            "$for",
         };
 
-        auto f = cond_param_position.find(str); 
-        if(f != cond_param_position.end()) return f->second;
+        auto f = repeatable.find(str); 
+        if(f != repeatable.end()) return true;
         
-        return {};        
+        return false;
+    }
+
+    auto get_token_fn_stoppable(const std::string_view str) -> bool
+    {
+        static std::set<std::string_view> stoppable
+        {
+            "$stop",
+        };
+
+        auto f = stoppable.find(str); 
+        if(f != stoppable.end()) return true;
+        
+        return false;
     }
 
 

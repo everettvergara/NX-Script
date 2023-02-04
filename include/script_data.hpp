@@ -32,7 +32,9 @@ namespace eg
         token_data              token_data_;
 
         token_id                result_token_id_;
-        size_t                  line_no_of_stop_;
+        line_no_stops           line_no_stops_;
+        line_no_repeats         line_no_repeats_;
+        // size_t                  line_no_of_stop_;
 
     public:
 
@@ -43,9 +45,14 @@ namespace eg
             token_type_tree_.add_branch(std::vector<token_type>{TT_PARAM, TT_ASSIGN, TT_ANY});
         }
 
-        auto get_line_no_of_stop() -> size_t &
+        auto get_line_no_stops() -> line_no_stops & 
         {
-            return line_no_of_stop_;
+            return line_no_stops_;
+        }
+
+        auto get_line_no_repeats() -> line_no_repeats & 
+        {
+            return line_no_repeats_;
         }
 
         auto get_result_token_id() -> token_id &
