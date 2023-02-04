@@ -201,10 +201,7 @@ namespace eg
 
                     auto v = tk_param.get_value();
                     if (not v) 
-                    {
-//                        std::cout << "uninit: " << tk_param.get_token_id() << std::endl;
                         return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk_param.get_token_name());
-                    }
                 
                 } else {
 
