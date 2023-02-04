@@ -25,6 +25,51 @@ namespace eg
         {
         }
 
+        auto solve2() -> bool
+        {
+
+            // Queued process
+            std::optional<size_t> qp {0};
+            
+            // Stack frame
+            std::stack<size_t> sf;
+
+
+            auto move_qp_tp_sf =    [&]() -> void {
+                                        if (qp)
+                                        {
+                                            sf.push(qp.value());
+                                            qp = std::nullopt;
+                                        }
+                                    };
+
+            do
+            {
+                move_qp_tp_sf();
+                auto lno = sf.top();
+                
+                // If top of the stack has dependencies then, execute them first
+                if (auto f = data_.get_line_no_dependencies().find(lno);
+                    f != data_.get_line_no_dependencies().end())
+                {
+                    auto ldeps = f->second;
+                    auto rb = ldeps.rbegin();
+                    do sf.push(*rb); while (++rb != ldeps.rend());
+                    continue;   
+                }
+
+                sf.pop();
+
+                // if lno needs repeat then put it to pq
+
+
+            } while (not sf.empty());
+            
+
+            return true;
+
+        }
+
         auto solve() -> bool
         {
             std::stack<std::tuple<size_t, bool>> sf;
