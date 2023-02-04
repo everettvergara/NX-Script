@@ -33,8 +33,8 @@ namespace eg
         auto solve() -> bool
         {
             // Non-Repeatable:   For Checking --> Ready to Pop
-            // Repeatable:       For Checking --> Exec Conditionals --> Push Statements --> For Checking
-            enum SF_PROC {FOR_CHECKING, READY_TO_POP, EXEC_CONDITIONALS, PUSH_STATEMENTS};
+            // Repeatable:       For Checking --> Exec Conditionals --> Push Statements --> Exec FN return 
+            enum SF_PROC {FOR_CHECKING, READY_TO_POP, EXEC_CONDITIONALS, PUSH_STATEMENTS, EXEC_FUNC_RETURN};
            
             std::stack<std::tuple<size_t, SF_PROC>> sf;
 
@@ -106,9 +106,7 @@ namespace eg
 
                         } else {
                             
-                            sf.pop();
-                            if (lno < data_.get_line_no_of_last_stop())
-                                sf.push({lno + 1, FOR_CHECKING});
+                            sf_proc = EXEC_FUNC_RETURN;
                             continue;
                         }
                     
@@ -118,10 +116,7 @@ namespace eg
                         sf_proc = FOR_CHECKING;
                         continue;
 
-                    } else {
-
-                        return set_err<bool, false>(ERR_INVALID_ROUTE);
-                    }
+                    } 
                 }
 
                 auto &tks           = data_.get_tokens();
@@ -210,7 +205,7 @@ namespace eg
                     auto v = tk_param.get_value();
                     if (not v) 
                     {
-                        std::cout << "uninit: " << tk_param.get_token_id() << std::endl;
+//                        std::cout << "uninit: " << tk_param.get_token_id() << std::endl;
                         return set_err<bool, false>(ERR_TT_PARAM_UNINIT, tk_param.get_token_name());
                     }
                 
