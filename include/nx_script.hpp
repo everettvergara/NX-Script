@@ -45,7 +45,7 @@ namespace eg
 
         auto conv_str_to_script_list(const std::string &str) -> script_list
         {
-            static std::string empty_str = "!;";
+            static std::string empty_str = "$stop();";
 
             script_list script;
 
