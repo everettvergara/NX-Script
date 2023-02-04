@@ -10,8 +10,7 @@
 l = 100;
 w = 200;
 h = 300;
-
-total = (l * l) + (w * w);
-$prt(total);
+d = $sqrt(l * l + w * w + h * h);
+$prt(d);
 
 

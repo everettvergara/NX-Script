@@ -36,8 +36,6 @@ namespace eg
         auto &v1 = get_token(tks, v1_id); if (not v1.get_value()) return {};
         auto &v2 = get_token(tks, v2_id); if (not v2.get_value()) return {};
         
-        std::cout << "add: " << v1.get_value().value() << " + " << v2.get_value().value() << std::endl;
-
         FP r = v1.get_value().value() + v2.get_value().value();
 
         return r;
@@ -47,7 +45,6 @@ namespace eg
     {
         if (result.size() < 2)
             return {};
-
 
         auto v2_id = result.top(); result.pop();
         auto v1_id = result.top(); result.pop();
@@ -65,14 +62,12 @@ namespace eg
         if (result.size() < 2)
             return {};
 
-
         auto v2_id = result.top(); result.pop();
         auto v1_id = result.top(); result.pop();
 
         auto &v1 = get_token(tks, v1_id); if (not v1.get_value()) return {};
         auto &v2 = get_token(tks, v2_id); if (not v2.get_value()) return {};
         
-        std::cout << "mul: " << v1.get_value().value() << " * " << v2.get_value().value() << std::endl;
         FP r = v1.get_value().value() * v2.get_value().value();
 
         return r;

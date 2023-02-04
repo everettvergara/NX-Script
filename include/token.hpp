@@ -48,7 +48,9 @@ namespace eg
             :   token_id_(tk.token_id_), 
                 token_type_(tk.token_type_), 
                 token_(tk.token_),
-                tk_fn_params_(std::move(tk.tk_fn_params_))
+                tk_fn_params_(std::move(tk.tk_fn_params_)),
+                value_(std::move(tk.value_)),
+                fn_name_(std::move(tk.fn_name_))
         {
         }
 

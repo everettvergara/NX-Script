@@ -30,10 +30,10 @@ namespace eg
             */
 
             // Add RVALUE Result
-            auto result_token = token(TT_RESULT, "{R}");
-            auto result_token_id = result_token.get_token_id();
-            data_.get_tokens().try_emplace(result_token_id, std::move(result_token)).first->first;
-            data_.get_result_token_id() = result_token_id;
+            // auto result_token = token(TT_RESULT, "{R}");
+            // auto result_token_id = result_token.get_token_id();
+            // data_.get_tokens().try_emplace(result_token_id, std::move(result_token)).first->first;
+            // data_.get_result_token_id() = result_token_id;
 
             for(size_t lno = 0; lno < data_.get_script_list().size(); ++lno) 
             {

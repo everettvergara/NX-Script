@@ -162,7 +162,7 @@ namespace eg
             result.push(tk.get_token_id());
         }
 
-        auto process_op(tokens &tks, token &tk_result, token &tk, std::stack<token_id> &result) -> bool
+        auto process_op(tokens &tks, token &tk, std::stack<token_id> &result) -> bool
         {
             auto op = get_token_op_executor(tk.get_token_type());
             
@@ -170,13 +170,19 @@ namespace eg
             if (not op_result)
                 return set_err<bool, false>(ERR_OP_INVALID_OUTPUT, tk.get_token_name());
 
-            tk_result.get_value() = op_result.value();
-            result.push(tk_result.get_token_id());
+
+            auto result_token = token(TT_RESULT, "{R}");
+            auto result_token_id = result_token.get_token_id();
+            result_token.get_value() = op_result.value();
+
+            tks.try_emplace(result_token_id, std::move(result_token));
+
+            result.push(result_token_id);
 
             return true;
         }
 
-        auto process_fn(tokens &tks, token &tk_result, token &tk, std::stack<token_id> &result) -> bool
+        auto process_fn(tokens &tks, token &tk, std::stack<token_id> &result) -> bool
         {
             auto &value = tk.get_value();
 
@@ -219,8 +225,12 @@ namespace eg
             
             value = *fn_result;
 
-            tk_result.get_value() = *value;
-            result.push(tk_result.get_token_id());
+            auto result_token = token(TT_RESULT, "{R}");
+            auto result_token_id = result_token.get_token_id();
+            result_token.get_value() = *value;
+            tks.try_emplace(result_token_id, std::move(result_token));
+
+            result.push(result_token_id);
 
             return true;
         }
@@ -229,7 +239,7 @@ namespace eg
         {
             std::stack<token_id> result;
 
-            auto &tk_result = get_token(tks, data_.get_result_token_id());
+//            auto &tk_result = get_token(tks, data_.get_result_token_id());
 
             for (const auto tk_id : pf_ptk)
             {
@@ -246,17 +256,17 @@ namespace eg
 
                 } else if (is_token_type_fn(tt)) {
 
-                    if (not process_fn(tks, tk_result, tk, result)) 
+                    if (not process_fn(tks, tk, result)) 
                         return {};
 
                 } else if (is_token_type_op(tt)) {
 
-                    if (not process_op(tks, tk_result, tk, result))
+                    if (not process_op(tks, tk, result))
                         return {};
 
                 } else if (is_token_type_assignment(tt)) {
 
-                    if (not process_op(tks, tk_result, tk, result))
+                    if (not process_op(tks, tk, result))
                         return {};
                     
                 } else if (is_token_type_stop(tt)) {
