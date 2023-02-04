@@ -45,10 +45,10 @@ namespace eg
                         auto ldeps = f->second;
                         auto rb = ldeps.rbegin();
                         do sf.push({*rb, false}); while (++rb != ldeps.rend());
-                        continue;
                     }
 
                     ready_to_pop = true;
+                    continue;
                 }
 
                 sf.pop();
