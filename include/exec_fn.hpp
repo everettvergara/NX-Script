@@ -302,6 +302,12 @@ namespace eg
         return static_cast<FP>(std::pow(a, b));
     }
 
+    auto exec_fn_nop(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &) -> std::optional<FP> 
+    {
+        return 0.0;
+    }
+
+
     auto get_token_fn_repeatable(const std::string_view str) -> bool
     {
         static std::set<std::string_view> repeatable
@@ -360,6 +366,9 @@ namespace eg
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
             {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
+
+            {"$stop",    std::bind(&exec_fn_nop, _1, _2)},
+
         };
 
         auto f = fn_signature.find(str); 
@@ -398,6 +407,7 @@ namespace eg
             {"$pow",   2},
 
             {"$pi",    0},
+            {"$stop",  0},
 
         };
 
