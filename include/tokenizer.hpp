@@ -122,11 +122,14 @@ namespace eg
                 for (auto l : *ld) ldep.emplace(l);
 
                 if (get_token_fn_repeatable(tk.get_fn_name().value()))
+                {
                     data_.get_line_no_repeats().emplace(lno);
+                    data_.get_repeat_token().try_emplace(lno, fn_tk_id);
+                }
 
                 if (get_token_fn_stoppable(tk.get_fn_name().value()))
                     data_.get_line_no_stops().emplace(lno);
-                    
+                
             }
 
             move_line_dependencies(data_.get_line_no_dependencies(), lno, std::move(ldep));

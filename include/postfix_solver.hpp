@@ -100,7 +100,6 @@ namespace eg
 
                 }
 
-                
                 auto &tks           = data_.get_tokens();
                 auto &pf_ptk        = data_.get_pf_parsable_tokens_list().at(lno);
                 auto line           = data_.get_script_list().at(lno);
