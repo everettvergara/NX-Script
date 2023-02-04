@@ -1,5 +1,8 @@
+
 #pragma once
 
+#include <fstream>
+#include <string>
 #include <optional>
 #include <algorithm>
 #include "error_info.hpp"
@@ -10,6 +13,18 @@
 
 namespace eg
 {
+
+    auto load_nx_script_from_file(std::string &&ansi_filename) -> std::optional<std::string>
+    {
+        std::string code_string;
+        std::ifstream file(ansi_filename);
+        if (not file) return {};
+
+        file >> code_string;
+
+        return code_string;
+    }
+
     class nx_script : public error_info
     {
 
@@ -62,7 +77,7 @@ namespace eg
 
             script.emplace_back(std::string_view(empty_str)) ;
             data_.get_line_no_of_last_stop() = script.size() - 1;
-            
+
             return script;
         }
 

@@ -10,13 +10,10 @@
 #include "exec_fn.hpp"
 #include "exec_op.hpp"
 #include "line_helper.hpp"
-#include <thread>
-#include <chrono>
 
 namespace eg
 {
 
-    using namespace std::chrono_literals;
     class postfix_solver : public error_info 
     {
     private: 
@@ -124,7 +121,7 @@ namespace eg
                 auto line           = data_.get_script_list().at(lno);
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
-                std::cout << lno << ": ";
+                // std::cout << lno << ": ";
 
                 auto r = solve_line(tks, pf_ptk, line, lvalue_tk_id);
                 if (not r) return false;
@@ -137,7 +134,7 @@ namespace eg
                 else if (lno < data_.get_line_no_of_last_stop())
                     sf.push({lno + 1, FOR_CHECKING});
 
-                std::cout << std::endl;
+                // std::cout << std::endl;
 
             } while(true);
 
