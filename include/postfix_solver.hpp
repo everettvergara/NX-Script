@@ -62,11 +62,20 @@ namespace eg
                 auto lvalue_tk_id   = data_.get_lvalue_tokens().at(lno);
 
 
-                if (not solve_line(tks, pf_ptk, line, lvalue_tk_id)) 
-                    return false;
+                auto r = solve_line(tks, pf_ptk, line, lvalue_tk_id);
+                if (not r) return false;
 
-                // If repeatable line, check the last condition if needed to pop or not
-                sf.pop();
+                if (not is_lno_repeatable(data_.get_line_no_stops(), lno)) 
+                    sf.pop();
+                
+                else if (r.value() == 0) 
+                    sf.pop();
+                
+                else 
+                {
+                    ready_to_pop = false;
+                }
+
 
 
                 if (is_lno_stopable(data_.get_line_no_stops(), lno)) 
@@ -169,7 +178,7 @@ namespace eg
             return true;
         }
 
-        auto solve_line(tokens &tks, const parsable_tokens &pf_ptk, const script_line line, const token_id lvalue_tk_id) -> bool
+        auto solve_line(tokens &tks, const parsable_tokens &pf_ptk, const script_line line, const token_id lvalue_tk_id) -> std::optional<FP>
         {
             std::stack<token_id> result;
 
@@ -191,17 +200,17 @@ namespace eg
                 } else if (is_token_type_fn(tt)) {
 
                     if (not process_fn(tks, tk_result, tk, result)) 
-                        return false;
+                        return {};
 
                 } else if (is_token_type_op(tt)) {
 
                     if (not process_op(tks, tk_result, tk, result))
-                        return false;
+                        return {};
 
                 } else if (is_token_type_assignment(tt)) {
 
                     if (not process_op(tks, tk_result, tk, result))
-                        return false;
+                        return {};
                     
                 } else if (is_token_type_stop(tt)) {
                     
@@ -209,22 +218,20 @@ namespace eg
                 
                 } else {
 
-                    return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
+                    return set_err<std::optional<FP>>(ERR_UNEXPECTED_TOKEN, tk.get_token_name());
 
                 }
             }
 
             if (result.size() != 1)
-                return set_err<bool, false>(ERR_UNEXPECTED_TOKEN, line);
+                return set_err<std::optional<FP>>(ERR_UNEXPECTED_TOKEN, line);
 
+            auto tk_id_of_result = result.top();
+            auto &final_result = tks.find(tk_id_of_result)->second;
             if (lvalue_tk_id) 
-            {
-                auto tk_id_of_result = result.top();
-                auto &final_result = tks.find(tk_id_of_result)->second;
-                tks.find(lvalue_tk_id)->second.get_value() = final_result.get_value().value();            
-            }
+                tks.find(lvalue_tk_id)->second.get_value() = final_result.get_value().value();
 
-            return true;
+            return final_result.get_value().value();
         }
 
         auto populate_pending(const size_t s) -> std::stack<std::tuple<size_t, bool>>
