@@ -15,7 +15,8 @@ auto main() -> int
 
     auto str_code = load_nx_script_from_file(file);
 
-    if (str_code) {
+    if (str_code) 
+    {
 
         nx_script nx(str_code.value());
 

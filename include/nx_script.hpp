@@ -13,26 +13,6 @@
 
 namespace eg
 {
-
-    auto load_nx_script_from_file(const std::string &ansi_filename) -> std::optional<std::string>
-    {
-        std::ifstream file(ansi_filename);
-        if (not file) return {};
-
-        std::string code_string;
-        file.seekg(0, std::ios::end);
-        code_string.reserve(file.tellg());
-        file.seekg(0, std::ios::beg);
-
-        code_string.assign(
-            (std::istreambuf_iterator<char>(file)),
-            std::istreambuf_iterator<char>());
-        
-        std::cout << code_string << std::endl;
-
-        return code_string;
-    }
-
     class nx_script : public error_info
     {
 
