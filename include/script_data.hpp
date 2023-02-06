@@ -31,7 +31,6 @@ namespace eg
         token_type_tree         token_type_tree_;
         token_data              token_data_;
 
-        // token_id                result_token_id_;
         line_no_stops           line_no_stops_;
         line_no_repeats         line_no_repeats_;
         size_t                  line_no_of_last_stop_;

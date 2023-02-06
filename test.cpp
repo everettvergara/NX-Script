@@ -3,6 +3,7 @@
 #include <string>
 
 #include "nx_script.hpp"
+#include "nx_script_helper.hpp"
 
 using eg::nx_script;
 using eg::load_nx_script_from_file;
