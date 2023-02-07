@@ -398,7 +398,7 @@ namespace eg
     {
         if (args.size() != 0) return {};
 
-        std::cout << "\033[J";
+        std::cout << "\033[2J";
 
         return 0;
     }

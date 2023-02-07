@@ -1,3 +1,13 @@
 
-i = 11;
-$prt(i % 10);
+
+$prtcls();
+
+i = 0;
+$for(   $lt(i, 10),
+        $(  $prtcol(30 + $rand() % 8),
+            $loc(i, i),
+            $prtc(65 + $rand() % 26),
+            i = i + 1)
+);
+
+$prtdef();
