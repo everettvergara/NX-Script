@@ -1,0 +1,33 @@
+
+'
+' This code looks more cryptic than C
+'
+
+
+$prtcls();
+
+
+'
+' Draw background and heart
+'
+
+
+i = 1;
+max = 30;
+
+$for(   $lte(i, max),
+        $(  
+            j = 1,
+            $for(   $lte(j, max * 2),
+                    $(
+                        $prtc(97 + $rand() % 26),
+                        j = j + 1
+                    )
+                ),
+
+            $prtc(10),
+            i = i + 1)
+);
+
+$prtdef();
+
