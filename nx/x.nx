@@ -6,13 +6,15 @@ i = 1;
 max = 30;
 $for(   $lte(i, max),
         $(  
-            $loc(i, i),
-            $prtcol(30 + $rand() % 8),
-            $prtc(65 + $rand() % 26),
+            j = 1,
+            $for(   $lte(j, max),
+                    $(
+                        $prtc(90 + $rand() % 26),
+                        j = j + 1
+                    )
+                ),
 
-            $loc(i, max + 1 - i),
-            $prtc(65 + $rand() % 26),
-
+            $prtc(10),
             i = i + 1)
 );
 
