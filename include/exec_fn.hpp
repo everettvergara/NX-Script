@@ -4,6 +4,8 @@
 #include <cmath>
 #include <functional>
 #include <tuple>
+#include <cstdlib>
+
 #include "common_alias.hpp"
 
 namespace eg
@@ -260,6 +262,11 @@ namespace eg
         return static_cast<FP>(std::rand());
     }
 
+    auto exec_fn_randmax(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (not args.empty()) return {};
+        return static_cast<FP>(RAND_MAX);
+    }
 
     auto exec_fn_true(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
@@ -475,6 +482,7 @@ namespace eg
             {"$prtcls",   std::bind(&exec_fn_prtcls, _1, _2)},
 
             {"$rand",     std::bind(&exec_fn_rand, _1, _2)},
+            {"$randmax",  std::bind(&exec_fn_randmax, _1, _2)},
 
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
@@ -530,6 +538,7 @@ namespace eg
             {"$pow",   2},
 
             {"$rand",  0},
+            {"$randmax",0},
 
             {"$pi",    0},
             {"$stop",  0},
