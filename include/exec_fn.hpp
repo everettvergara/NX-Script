@@ -283,7 +283,6 @@ namespace eg
         return 0;
     }
 
-
     auto exec_fn_prt(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         for (auto [tk_id, sv] : args)
@@ -315,6 +314,19 @@ namespace eg
 
         return 0;
     }
+
+    auto exec_fn_loc(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto loc = get_2arg_values(tks, args);
+        if (not loc) return {};
+
+        auto [x, y] = loc.value();
+
+        std::cout << "\033[" << static_cast<int>(y) << ";" << static_cast<int>(x) << "H";
+
+        return 0;
+    }
+
 
     auto exec_fn_prtc(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
@@ -448,6 +460,7 @@ namespace eg
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
 
             {"$chk",    std::bind(&exec_fn_chk, _1, _2)},
+            {"$loc",    std::bind(&exec_fn_prt, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
             {"$prtc",   std::bind(&exec_fn_prtc, _1, _2)},
             {"$prtcol",   std::bind(&exec_fn_prtcol, _1, _2)},
@@ -497,6 +510,7 @@ namespace eg
             {"$max",   2},
 
             {"$chk",   std::numeric_limits<int32_t>::min()},
+            {"$loc",   2},
             {"$prt",   1},
             {"$prtc",  1},
             {"$prtcol",1},
