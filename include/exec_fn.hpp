@@ -294,6 +294,22 @@ namespace eg
             auto &tk = f->second;
             if (not tk.get_value()) return {};
 
+            std::cout << *tk.get_value();
+        }
+
+        return 0;
+    }
+
+    auto exec_fn_chk(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        for (auto [tk_id, sv] : args)
+        {
+            auto f = tks.find(tk_id);
+            if (f == tks.end()) return {};
+
+            auto &tk = f->second;
+            if (not tk.get_value()) return {};
+
             std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
         }
 
@@ -430,9 +446,10 @@ namespace eg
 
             {"$min",    std::bind(&exec_fn_min, _1, _2)},
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
+
+            {"$prt",    std::bind(&exec_fn_chk, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
             {"$prtc",   std::bind(&exec_fn_prtc, _1, _2)},
-
             {"$prtcol",   std::bind(&exec_fn_prtcol, _1, _2)},
             {"$prtdef",   std::bind(&exec_fn_prtdef, _1, _2)},
             {"$prtcls",   std::bind(&exec_fn_prtcls, _1, _2)},
@@ -479,7 +496,8 @@ namespace eg
             {"$min",   2},
             {"$max",   2},
 
-            {"$prt",   std::numeric_limits<int32_t>::min()},
+            {"$chk",   std::numeric_limits<int32_t>::min()},
+            {"$prt",   1},
             {"$prtc",  1},
             {"$prtcol",1},
             {"$prtdef",0},
