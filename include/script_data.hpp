@@ -56,11 +56,6 @@ namespace eg
             return line_no_of_last_stop_;
         }
 
-        auto get_line_no_of_last_stop() -> size_t & 
-        {
-            return line_no_of_last_stop_;
-        }
-
         auto get_line_no_stops() -> line_no_stops & 
         {
             return line_no_stops_;
@@ -75,7 +70,6 @@ namespace eg
         {
             return line_no_branching_;
         }
-
 
         // auto get_result_token_id() -> token_id &
         // {

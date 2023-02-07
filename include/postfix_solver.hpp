@@ -256,7 +256,9 @@ namespace eg
             
             auto fn_result = fn.value()(tks, tk.get_fn_params());
             if (not fn_result)
+            {
                 return set_err<bool, false>(ERR_FN_INVALID_OUTPUT, tk.get_fn_name().value());
+            }
             
             value = *fn_result;
 
@@ -273,8 +275,6 @@ namespace eg
         auto solve_line(tokens &tks, const parsable_tokens &pf_ptk, const script_line line, const token_id lvalue_tk_id) -> std::optional<FP>
         {
             std::stack<token_id> result;
-
-//            auto &tk_result = get_token(tks, data_.get_result_token_id());
 
             for (const auto tk_id : pf_ptk)
             {

@@ -116,11 +116,11 @@ namespace eg
 
     auto exec_fn_if(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
-        auto t = get_3arg_values(tks, args); 
-        if (not t) return {};
-        
-        auto [cond, true_action, false_action] = t.value();
-        return cond != 0 ? true_action : false_action;
+        auto cond = get_arg_value(0, tks, args); 
+        if (not cond) 
+            return {};
+
+        return cond.value();
     }
 
     auto exec_fn_if_t(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 

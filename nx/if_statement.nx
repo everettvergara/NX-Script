@@ -1,0 +1,11 @@
+
+' A sample if statement
+'
+
+x = 100;
+
+$if($eq(x, 100), 
+    $prt(1)
+);
+
+$prt(x);
