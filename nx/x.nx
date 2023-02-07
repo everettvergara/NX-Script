@@ -1,15 +1,19 @@
 
+'
+' This code looks more cryptic than C
+'
+
 
 $prtcls();
 
 i = 1;
-max = 30;
+max = 50;
 $for(   $lte(i, max),
         $(  
             j = 1,
-            $for(   $lte(j, max),
+            $for(   $lte(j, max * 3),
                     $(
-                        $prtc(90 + $rand() % 26),
+                        $prtc(97 + $rand() % 26),
                         j = j + 1
                     )
                 ),
