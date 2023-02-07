@@ -324,6 +324,21 @@ namespace eg
         return false;
     }
 
+    auto get_token_fn_branching(const std::string_view str) -> bool
+    {
+        static std::set<std::string_view> repeatable
+        {
+            "$if",
+        };
+
+        auto f = repeatable.find(str); 
+        if(f != repeatable.end()) return true;
+        
+        return false;
+    }
+
+ 
+
     auto get_token_fn_stoppable(const std::string_view str) -> bool
     {
         static std::set<std::string_view> stoppable
@@ -347,6 +362,7 @@ namespace eg
             {"$",    std::bind(&exec_fn_block, _1, _2)},
 
             {"$if",    std::bind(&exec_fn_if, _1, _2)},
+            {"$ift",    std::bind(&exec_fn_if, _1, _2)},
             {"$for",    std::bind(&exec_fn_for, _1, _2)},
 
             {"$eq",    std::bind(&exec_fn_eq, _1, _2)},
@@ -386,7 +402,9 @@ namespace eg
         static std::unordered_map<std::string_view, int32_t> fn_signature
         {
             {"$",      std::numeric_limits<int32_t>::min()},
-            {"$if",    3},
+
+            {"$if",    2},
+            {"$ift",   3},
             {"$for",   2},  // $for(cond, $)
 
             {"$eq",    2},
