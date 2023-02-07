@@ -312,7 +312,36 @@ namespace eg
         return 0;
     }
 
+    auto exec_fn_prtcol(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto ch_fp = get_1arg_value(tks, args);
+        if (not ch_fp) return {};
 
+        auto ch = static_cast<int>(ch_fp.value());
+
+        // 30: black, 31: red, 32: green, 33: yellow, 34: blue, 35: magenta, 36: cyan, 37: white
+        std::cout << "\033[" << ch << "m";
+
+        return 0;
+    }
+
+    auto exec_fn_prtdef(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (args.size() != 0) return {};
+
+        std::cout << "\033[0m";
+
+        return 0;
+    }
+
+    auto exec_fn_prtcls(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (args.size() != 0) return {};
+
+        std::cout << "\033[J";
+
+        return 0;
+    }
 
     auto exec_fn_pow(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
@@ -403,6 +432,11 @@ namespace eg
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
             {"$prtc",   std::bind(&exec_fn_prtc, _1, _2)},
+
+            {"$prtcol",   std::bind(&exec_fn_prtcol, _1, _2)},
+            {"$prtdef",   std::bind(&exec_fn_prtdef, _1, _2)},
+            {"$prtcls",   std::bind(&exec_fn_prtcls, _1, _2)},
+
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
             {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
@@ -447,6 +481,9 @@ namespace eg
 
             {"$prt",   std::numeric_limits<int32_t>::min()},
             {"$prtc",  1},
+            {"$prtcol",1},
+            {"$prtdef",0},
+            {"$prtcls",0},
 
             {"$sqrt",  1},
             {"$pow",   2},
