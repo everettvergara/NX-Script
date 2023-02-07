@@ -102,7 +102,7 @@ namespace eg
         auto &v1 = get_token(tks, v1_id); if (not v1.get_value()) return {};
         auto &v2 = get_token(tks, v2_id); if (not v2.get_value()) return {};
         
-        FP r = v1.get_value().value() % v2.get_value().value();
+        FP r = static_cast<int>(v1.get_value().value()) % static_cast<int>(v2.get_value().value());
 
         return r;
     }
