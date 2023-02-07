@@ -10,6 +10,7 @@ magenta = 35;
 cyan = 36;
 white = 37;
 
+$prtcls();
 $prtcol(black); $prt(0); $prtc(10);
 $prtcol(red); $prt(1); $prtc(10);
 $prtcol(green); $prt(2); $prtc(10);
@@ -18,3 +19,4 @@ $prtcol(blue); $prt(4); $prtc(10);
 $prtcol(magenta); $prt(5); $prtc(10);
 $prtcol(cyan); $prt(6); $prtc(10);
 $prtcol(white); $prt(7); $prtc(10);
+$prtdef();

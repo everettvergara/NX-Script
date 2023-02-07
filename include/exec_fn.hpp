@@ -325,7 +325,7 @@ namespace eg
         return 0;
     }
 
-    auto exec_fn_prtdef(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    auto exec_fn_prtdef(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (args.size() != 0) return {};
 
@@ -334,7 +334,7 @@ namespace eg
         return 0;
     }
 
-    auto exec_fn_prtcls(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    auto exec_fn_prtcls(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (args.size() != 0) return {};
 

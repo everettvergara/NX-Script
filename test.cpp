@@ -11,7 +11,7 @@ using eg::load_nx_script_from_file;
 auto main() -> int
 {
 
-    std::string file = "D:/Everett/Codes/Projects/Personal/NX-Solver/nx/if_statement.nx";
+    std::string file = "D:/Everett/Codes/Projects/Personal/NX-Solver/nx/colors.nx";
 //    std::string file = "D:/Everett/Codes/Projects/Personal/NX-Solver/nx/double_for_loop.nx";
 
     auto str_code = load_nx_script_from_file(file);
