@@ -307,10 +307,7 @@ namespace eg
 
             auto &tk = f->second;
             if (not tk.get_value()) return {};
-//            std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
         }
-
-        std::cout << std::endl;
 
         return 0;
     }
