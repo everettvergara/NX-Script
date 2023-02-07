@@ -295,13 +295,24 @@ namespace eg
             if (not tk.get_value()) return {};
 
             std::cout << tk.get_token_name() << ": " << *tk.get_value() << ", ";
-//            std::cout << ": " << *tk.get_value() << ", ";
         }
-
-        // std::cout << std::endl;
 
         return 0;
     }
+
+    auto exec_fn_prtc(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto ch_fp = get_1arg_value(tks, args);
+        if (not ch_fp) return {};
+
+        auto ch = static_cast<char>(static_cast<int>(ch_fp.value()));
+
+        std::cout << ch;
+
+        return 0;
+    }
+
+
 
     auto exec_fn_pow(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
@@ -391,6 +402,7 @@ namespace eg
             {"$min",    std::bind(&exec_fn_min, _1, _2)},
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
+            {"$prtc",   std::bind(&exec_fn_prtc, _1, _2)},
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
             {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
@@ -434,6 +446,8 @@ namespace eg
             {"$max",   2},
 
             {"$prt",   std::numeric_limits<int32_t>::min()},
+            {"$prtc",  1},
+
             {"$sqrt",  1},
             {"$pow",   2},
 
