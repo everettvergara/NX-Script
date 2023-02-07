@@ -90,6 +90,24 @@ namespace eg
         return r;
     }
 
+    auto exec_op_mod(tokens &tks, std::stack<token_id> &result) -> std::optional<FP>
+    {
+        if (result.size() < 2)
+            return {};
+
+
+        auto v2_id = result.top(); result.pop();
+        auto v1_id = result.top(); result.pop();
+
+        auto &v1 = get_token(tks, v1_id); if (not v1.get_value()) return {};
+        auto &v2 = get_token(tks, v2_id); if (not v2.get_value()) return {};
+        
+        FP r = v1.get_value().value() % v2.get_value().value();
+
+        return r;
+    }
+
+
     auto get_token_op_executor(const token_type tt) 
             -> std::optional<std::function<auto (tokens &, std::stack<token_id> &) -> std::optional<FP>>>
     {
@@ -100,6 +118,7 @@ namespace eg
             {TT_OP_SUB, std::bind(&exec_op_sub, _1, _2)},
             {TT_OP_MUL, std::bind(&exec_op_mul, _1, _2)},
             {TT_OP_DIV, std::bind(&exec_op_div, _1, _2)},
+            {TT_OP_MOD, std::bind(&exec_op_mod, _1, _2)},
             {TT_ASSIGN, std::bind(&exec_op_assign, _1, _2)},
         };    
 
