@@ -24,7 +24,7 @@ auto main() -> int
         if (not nx.eval()) 
             nx.get_err().print();
 
-        std::cout << "Exited properly!" << std::endl;
+        std::cout << "\n\nExited Properly." << std::endl;
 
     } else {
 

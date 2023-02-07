@@ -492,7 +492,7 @@ namespace eg
             {"$max",    std::bind(&exec_fn_max, _1, _2)},
 
             {"$chk",    std::bind(&exec_fn_chk, _1, _2)},
-            {"$loc",    std::bind(&exec_fn_prt, _1, _2)},
+            {"$loc",    std::bind(&exec_fn_loc, _1, _2)},
             {"$prt",    std::bind(&exec_fn_prt, _1, _2)},
             {"$prtc",   std::bind(&exec_fn_prtc, _1, _2)},
             {"$prtcol",   std::bind(&exec_fn_prtcol, _1, _2)},
