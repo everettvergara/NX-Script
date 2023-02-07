@@ -5,15 +5,15 @@
 
 
 $prtcls();
-
+$loc(1, 1);
 
 '
-' Draw background and heart
+' Draw background
 '
 
 
 i = 1;
-max = 30;
+max = 31;
 
 $for(   $lte(i, max),
         $(  
@@ -29,5 +29,26 @@ $for(   $lte(i, max),
             i = i + 1)
 );
 
+
+'
+' Draw heart
+'
+
+pi  = 0.0;
+red = 31;
+$for(   $lt(pi, $pi * 2),
+        $(  
+            abcos = $abs($cos(pi));
+            r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / (sin(pi) + 1.4);
+
+            $loc(15 + r * 10 * $cos(pi), 15 - r * 10 * $sin(pi));
+            $col(red);
+            $prtc(65);
+
+            pi = pi + 0.1)
+);
+
+
+$loc(1, 32);
 $prtdef();
 
