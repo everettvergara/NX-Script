@@ -29,8 +29,9 @@ namespace eg
 
         auto solve() -> bool
         {
-            // Non-Repeatable:   For Checking --> Ready to Pop
-            // Repeatable:       For Checking --> Exec Conditionals --> Push Statements --> Exec FN return 
+            // Non-Repeatable:  For Checking --> Ready to Pop
+            // Branching:       Checking --> Exec Conditionals --> Push Statements --> Exec FN return 
+            // Repeatable:      Checking --> Exec Conditionals --> Push Statements --> Exec FN return 
             enum SF_PROC {FOR_CHECKING, READY_TO_POP, EXEC_CONDITIONALS, PUSH_STATEMENTS, EXEC_FUNC_RETURN};
            
             std::stack<std::tuple<size_t, SF_PROC>> sf;
@@ -73,6 +74,7 @@ namespace eg
                 auto &sf_proc   = std::get<1>(sf.top());
 
                 auto is_lrepeatable = is_lno_repeatable(data_.get_line_no_repeats(), lno);
+                auto is_lbranching = 
 
                 if (not is_lrepeatable)
                 {

@@ -36,6 +36,7 @@ namespace eg
     using line_no_dependencies      = std::unordered_map<size_t, line_nos>;
     using line_no_stops             = std::unordered_set<size_t>;
     using line_no_repeats           = std::unordered_set<size_t>;
+    using line_no_branching         = std::unordered_set<size_t>;
     using repeat_token              = std::unordered_map<size_t, token_id>;
 
     class token_type_tree;

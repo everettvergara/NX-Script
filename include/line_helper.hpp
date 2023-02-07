@@ -20,4 +20,12 @@ namespace eg
         return true;
     }
 
+    auto is_lno_branching(const line_no_branching &branching, const size_t lno) -> bool 
+    {
+        auto f = branching.find(lno);
+        if (f == branching.end()) 
+            return false;
+        return true;
+    }
+
 }
