@@ -254,6 +254,13 @@ namespace eg
         return static_cast<FP>(3.1415926535);
     }
 
+    auto exec_fn_rand(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        if (not args.empty()) return {};
+        return static_cast<FP>(std::rand());
+    }
+
+
     auto exec_fn_true(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (not args.empty()) return {};
@@ -467,6 +474,8 @@ namespace eg
             {"$prtdef",   std::bind(&exec_fn_prtdef, _1, _2)},
             {"$prtcls",   std::bind(&exec_fn_prtcls, _1, _2)},
 
+            {"$rand",     std::bind(&exec_fn_rand, _1, _2)},
+
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
             {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
@@ -519,6 +528,8 @@ namespace eg
 
             {"$sqrt",  1},
             {"$pow",   2},
+
+            {"$rand",  0},
 
             {"$pi",    0},
             {"$stop",  0},
