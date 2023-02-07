@@ -18,6 +18,7 @@ namespace eg
         TT_OP_SUB,
         TT_OP_MUL,
         TT_OP_DIV,
+        TT_OP_MOD,
 
         TT_PAR_OPEN,
         TT_PAR_CLOSE,

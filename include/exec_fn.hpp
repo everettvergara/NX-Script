@@ -262,7 +262,6 @@ namespace eg
         return static_cast<FP>(time(0));
     }
 
-
     auto exec_fn_randseed(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_1arg_value(tks, args); 

@@ -29,6 +29,7 @@ namespace eg
         else if(str[i] == '-')          return TT_OP_SUB;
         else if(str[i] == '*')          return TT_OP_MUL;
         else if(str[i] == '/')          return TT_OP_DIV;
+        else if(str[i] == '%')          return TT_OP_MOD;
 
         else if(str[i] == '(')          return TT_PAR_OPEN;
         else if(str[i] == ')')          return TT_PAR_CLOSE;
@@ -48,6 +49,7 @@ namespace eg
         {
             case TT_OP_MUL:     return 50;
             case TT_OP_DIV:     return 50;
+            case TT_OP_MOD:     return 50;
             case TT_OP_ADD:     return 40;
             case TT_OP_SUB:     return 40;
             case TT_PAR_OPEN:   return 10;
@@ -70,6 +72,7 @@ namespace eg
             case TT_OP_SUB:     return "-";
             case TT_OP_MUL:     return "*";
             case TT_OP_DIV:     return "/";
+            case TT_OP_MOD:     return "%";
             case TT_PAR_OPEN:   return "(";
             case TT_PAR_CLOSE:  return ")";
             case TT_PARAM:      return "&";
@@ -274,6 +277,7 @@ namespace eg
             {TT_OP_SUB,     std::bind(&parse_sv_single, _1, _2)},
             {TT_OP_MUL,     std::bind(&parse_sv_single, _1, _2)},
             {TT_OP_DIV,     std::bind(&parse_sv_single, _1, _2)},
+            {TT_OP_MOD,     std::bind(&parse_sv_single, _1, _2)},
             {TT_PARAM,      std::bind(&parse_sv_param, _1, _2)},
             {TT_END,        std::bind(&parse_sv_single, _1, _2)},
             {TT_PAR_OPEN,   std::bind(&parse_sv_single, _1, _2)},
@@ -402,8 +406,9 @@ namespace eg
     auto is_token_type_op(token_type tt) -> bool
     {
         if (tt == TT_OP_ADD or tt == TT_OP_SUB or
-            tt == TT_OP_MUL or tt == TT_OP_DIV) 
+            tt == TT_OP_MUL or tt == TT_OP_DIV or tt == TT_OP_MOD) 
             return true;
         return false;
     }
 }
+
