@@ -74,9 +74,9 @@ namespace eg
                 auto &sf_proc   = std::get<1>(sf.top());
 
                 auto is_lrepeatable = is_lno_repeatable(data_.get_line_no_repeats(), lno);
-                auto is_lbranching = 
+                auto is_lbranching = is_lno_branching(data_.get_line_no_branching(), lno);
 
-                if (not is_lrepeatable)
+                if (not is_lrepeatable and not is_lbranching)
                 {
                     if (sf_proc == FOR_CHECKING)
                     {
@@ -85,8 +85,41 @@ namespace eg
                         continue;
                     }
                 
+                } else if (is_lbranching) {
+
+                    if (sf_proc == FOR_CHECKING)
+                    {
+                        push_ldeps_to_sf_for_cond_repeat(lno);
+                        sf_proc = EXEC_CONDITIONALS;
+                        continue;
+                    
+                    } else if (sf_proc == EXEC_CONDITIONALS) {
+
+                        auto conditional_line = *data_.get_line_no_dependencies().at(lno).begin();
+                        auto tk_id = *data_.get_parsable_tokens_list().at(conditional_line).begin();
+
+                        if (data_.get_tokens().find(tk_id)->second.get_value() != 0)
+                        {
+                            sf_proc = PUSH_STATEMENTS;
+                            continue;
+
+                        } else {
+                            
+                            sf_proc = EXEC_FUNC_RETURN;
+                            continue;
+                        }
+                    
+                    } else if (sf_proc == PUSH_STATEMENTS) {
+                    
+                        push_ldeps_to_sf_for_repeat(lno);
+                        sf_proc = EXEC_FUNC_RETURN;
+                        continue;
+
+                    } 
+
                 } else {
                 
+
                     if (sf_proc == FOR_CHECKING)
                     {
                         push_ldeps_to_sf_for_cond_repeat(lno);

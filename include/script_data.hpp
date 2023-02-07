@@ -33,6 +33,7 @@ namespace eg
 
         line_no_stops           line_no_stops_;
         line_no_repeats         line_no_repeats_;
+        line_no_branching       line_no_branching_;
         size_t                  line_no_of_last_stop_;
         repeat_token            repeat_token_;
 
@@ -55,6 +56,11 @@ namespace eg
             return line_no_of_last_stop_;
         }
 
+        auto get_line_no_of_last_stop() -> size_t & 
+        {
+            return line_no_of_last_stop_;
+        }
+
         auto get_line_no_stops() -> line_no_stops & 
         {
             return line_no_stops_;
@@ -64,6 +70,12 @@ namespace eg
         {
             return line_no_repeats_;
         }
+
+        auto get_line_no_branching() -> line_no_branching & 
+        {
+            return line_no_branching_;
+        }
+
 
         // auto get_result_token_id() -> token_id &
         // {
