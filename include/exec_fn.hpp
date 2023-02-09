@@ -250,6 +250,15 @@ namespace eg
         return static_cast<FP>(std::sqrt(t.value()));
     }
 
+    auto exec_fn_abs(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto t = get_1arg_value(tks, args); 
+        if (not t) return {};
+
+        return t.value() < 0 ? -t.value() : t.value();
+    }
+
+
     auto exec_fn_cos(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         auto t = get_1arg_value(tks, args); 
@@ -528,6 +537,7 @@ namespace eg
             {"$pi",     std::bind(&exec_fn_pi, _1, _2)},
             {"$pow",    std::bind(&exec_fn_pow, _1, _2)},
             {"$sqrt",   std::bind(&exec_fn_sqrt, _1, _2)},
+            {"$abs",   std::bind(&exec_fn_abs, _1, _2)},
             {"$cos",   std::bind(&exec_fn_cos, _1, _2)},
             {"$sin",   std::bind(&exec_fn_sin, _1, _2)},
             {"$tan",   std::bind(&exec_fn_tan, _1, _2)},
@@ -589,6 +599,7 @@ namespace eg
             {"$pi",    0},
             {"$stop",  0},
 
+            {"$abs",  1},
             {"$cos",  1},
             {"$sin",  1},
             {"$tan",  1},
