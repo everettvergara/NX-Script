@@ -16,8 +16,10 @@
 
 namespace eg
 {
+
     auto identify_token_type(const std::string_view str, const size_t i) -> token_type
     {
+        // TODO: Should use a Syntax Tree on reimplementation
         if(std::isspace(str[i]))        return TT_SPACE;
         else if(std::isdigit(str[i]))   return TT_NUM;
         else if(std::isalpha(str[i]))   return TT_VAR;
@@ -253,6 +255,7 @@ namespace eg
         auto e = std::find_if_not(s + 1, sv.end(),  [](char ch) -> bool {
                                                         return std::isdigit(ch);
                                                     });
+
         auto tk_id = svton<token_id>(std::string_view(s, e));
         return tk_id;
     }

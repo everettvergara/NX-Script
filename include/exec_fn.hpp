@@ -5,6 +5,8 @@
 #include <functional>
 #include <tuple>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 
 #include "common_alias.hpp"
 
@@ -283,6 +285,18 @@ namespace eg
         return static_cast<FP>(std::tan(t.value()));
     }
 
+    auto exec_fn_delay(const tokens &tks, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
+    {
+        auto t = get_1arg_value(tks, args); 
+        if (not t) return {};
+
+        using namespace std::chrono_literals;
+        auto delay = static_cast<unsigned long long>(t.value());
+        std::this_thread::sleep_for(operator""ms(delay));
+        return t.value();
+    }
+
+
     auto exec_fn_pi(const tokens &, const std::vector<std::tuple<token_id, std::string_view>> &args) -> std::optional<FP> 
     {
         if (not args.empty()) return {};
@@ -542,6 +556,8 @@ namespace eg
             {"$sin",   std::bind(&exec_fn_sin, _1, _2)},
             {"$tan",   std::bind(&exec_fn_tan, _1, _2)},
 
+            {"$delay",   std::bind(&exec_fn_delay, _1, _2)},
+
             {"$stop",    std::bind(&exec_fn_nop, _1, _2)},
 
         };
@@ -603,6 +619,8 @@ namespace eg
             {"$cos",  1},
             {"$sin",  1},
             {"$tan",  1},
+
+            {"$delay",1},
 
         };
 

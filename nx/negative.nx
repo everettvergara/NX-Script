@@ -1,0 +1,8 @@
+'
+' Parsing a negative number
+'
+
+
+x = 0 - 100.5;
+
+$chk(x);
