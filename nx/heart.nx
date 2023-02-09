@@ -35,9 +35,12 @@ $for(   $lt(pi, $pi() * 2),
         $(  
             abcos = $abs($cos(pi)),
             r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / ($sin(pi) + 1.4),
+            
             $loc(31 + r * 5 * $cos(pi), 10 - r * 5 * $sin(pi)),
+            
             $prtcol(red),
             $prtc(65 + $rand() % 26),
+            
             $delay(10),
             pi = pi + 0.025)
 );
