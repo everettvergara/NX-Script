@@ -51,6 +51,8 @@ Some things it can do right now:
 
 ```
 
+![Heart output](https://github.com/everettvergara/NX-Solver/blob/main/heart.PNG)
+
 ```
     $prtcls();
     $loc(1, 1);
