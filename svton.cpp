@@ -5,7 +5,7 @@
 
 auto main() -> int 
 {
-    std::string_view sv = "100.34";
+    std::string_view sv = "100.34.";
 
     auto fp = eg::svton<double>(sv);
 

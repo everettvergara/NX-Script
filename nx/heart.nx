@@ -1,9 +1,3 @@
-
-'
-' This code looks more cryptic than C
-'
-
-
 $prtcls();
 $loc(1, 1);
 
@@ -36,16 +30,15 @@ $for(   $lte(i, max),
 
 pi = 0.0;
 red = 31;
-$for(   $lt(rad, $pi() * 2),
+
+$for(   $lt(pi, $pi() * 2),
         $(  
             abcos = $abs($cos(pi)),
-            r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / (sin(pi) + 1.4),
-
-            $loc(15 + r * 10 * $cos(pi), 15 - r * 10 * $sin(pi)),
+            r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / ($sin(pi) + 1.4),
+            $loc(31 + r * 5 * $cos(pi), 10 - r * 5 * $sin(pi)),
             $prtcol(red),
-            $prtc(65),
-
-            pi = pi + 0.1)
+            $prtc(65 + $rand() % 26),
+            pi = pi + 0.025)
 );
 
 
