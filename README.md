@@ -51,3 +51,51 @@ Some things it can do right now:
 
 ```
 
+```
+    $prtcls();
+    $loc(1, 1);
+
+    '
+    ' Draw background
+    '
+
+
+    i = 1;
+    max = 31;
+
+    $for(   $lte(i, max),
+            $(  
+                j = 1,
+                $for(   $lte(j, max * 2),
+                        $(
+                            $prtc(97 + $rand() % 26),
+                            j = j + 1
+                        )
+                    ),
+
+                $prtc(10),
+                i = i + 1)
+    );
+
+
+    '
+    ' Draw heart
+    '
+
+    pi = 0.0;
+    red = 31;
+
+    $for(   $lt(pi, $pi() * 2),
+            $(  
+                abcos = $abs($cos(pi)),
+                r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / ($sin(pi) + 1.4),
+                $loc(31 + r * 5 * $cos(pi), 10 - r * 5 * $sin(pi)),
+                $prtcol(red),
+                $prtc(65 + $rand() % 26),
+                pi = pi + 0.025)
+    );
+
+
+    $loc(1, 32);
+    $prtdef();
+```
