@@ -1,8 +1,8 @@
-# NX-Solver
-Numerical Expression Solver (NXS - A Scripting Language) {Not yet the official name}
+# NX-Script
+Numerical Expression Scripting (NXS)
 Author: Everett Gaius
 
-NXS is an interpreter written in C++ that evaluates mathematical expressions and solves them to produce numerical results (and graphs + tables) on the fly. The interpreter takes mathematical expressions as input to parse and process the expression, perform the necessary calculations, and return the result. The interpreter can handle a variety of mathematical operations and functions, making it a versatile tool for solving mathematical problems. 
+NXS is an interpreter written in C++ that evaluates mathematical expressions and solves them to produce numerical results (and graphs + tables) on the fly. The interpreter takes mathematical expressions as input to parse and process the expression, perform the necessary calculations, and return the result. The interpreter can handle a variety of mathematical operations and functions, making it a versatile tool for solving and visualizing mathematical problems. 
 
 At this point, NXS is at its infancy stage. I'm currently looking for co-maintainers who can help me with the following:
 
