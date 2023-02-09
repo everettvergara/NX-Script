@@ -34,16 +34,16 @@ $for(   $lte(i, max),
 ' Draw heart
 '
 
-pi  = 0.0;
+pi = 0.0;
 red = 31;
-$for(   $lt(pi, $pi * 2),
+$for(   $lt(rad, $pi() * 2),
         $(  
-            abcos = $abs($cos(pi));
-            r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / (sin(pi) + 1.4);
+            abcos = $abs($cos(pi)),
+            r = 2.0 - 2.0 * $sin(pi) + $sin(pi) * $sqrt(abcos) / (sin(pi) + 1.4),
 
-            $loc(15 + r * 10 * $cos(pi), 15 - r * 10 * $sin(pi));
-            $col(red);
-            $prtc(65);
+            $loc(15 + r * 10 * $cos(pi), 15 - r * 10 * $sin(pi)),
+            $prtcol(red),
+            $prtc(65),
 
             pi = pi + 0.1)
 );

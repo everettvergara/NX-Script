@@ -15,10 +15,20 @@ namespace eg
         bool negative = *t == '-' ? true : false;
         t += negative;
         while(t != sv.end()) {
+            if(*t == '.') break;
             if(!isdigit(*t)) return {};
             n = (n * 10) + (*t - '0');
             ++t;
         }
+        
+        N d = 10.0;
+        while(t != sv.end()) {
+            if(!isdigit(*t)) return {};
+            n += (*t - '0') / d;
+            d *= 10;
+            ++t;
+        }
+
         return negative ? -n : n;
     }
 }
